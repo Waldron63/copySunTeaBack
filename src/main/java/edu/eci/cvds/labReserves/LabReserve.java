@@ -1,13 +1,13 @@
-package edu.eci.cvds.ECILabReserves;
+package edu.eci.cvds.labReserves;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EciLabReserve {
+public class LabReserve {
 
 	public static void main(String[] args) {
-		SpringApplication.run(EciLabReserve.class, args);
+		SpringApplication.run(LabReserve.class, args);
 	}
 
 }
