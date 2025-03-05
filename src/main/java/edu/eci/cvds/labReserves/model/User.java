@@ -17,9 +17,5 @@ public abstract class User {
         this.reserves = new HashMap<>();
     }
 
-    public boolean createReserve() {
-        return false;
-    }
-
-    public abstract boolean removeReserve();
+    
 }
