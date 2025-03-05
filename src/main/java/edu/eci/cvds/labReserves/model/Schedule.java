@@ -13,6 +13,10 @@ public class Schedule {
     private String day;
     private Laboratory laboratory;
 
+    public void setLaboratory(Laboratory laboratory) {
+        this.laboratory = laboratory;
+    }
+
     public void setStartHour(String startHour) {
         this.startHour = startHour;
     }
