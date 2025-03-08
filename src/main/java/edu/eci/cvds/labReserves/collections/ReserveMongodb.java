@@ -3,6 +3,7 @@ package edu.eci.cvds.labReserves.collections;
 import edu.eci.cvds.labReserves.model.Reserve;
 import edu.eci.cvds.labReserves.model.Schedule;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "reserve")
@@ -13,7 +14,9 @@ public class ReserveMongodb extends Reserve {
     private String reason;
     private String state;
     private String user;
+    @DBRef
     private int schedule_id;
+    @DBRef
     private int user_id;
 
     public ReserveMongodb() {
