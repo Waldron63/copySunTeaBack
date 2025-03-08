@@ -5,9 +5,4 @@ public class Administrator extends User{
     public Administrator(int id, String name, String mail, String password) {
         super(id, name, mail, password);
     }
-
-    @Override
-    public boolean removeReserve() {
-        return false;
-    }
 }

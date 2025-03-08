@@ -6,8 +6,4 @@ public class Teacher extends User{
         super(id, name, mail, password);
     }
 
-    @Override
-    public boolean removeReserve() {
-        return false;
-    }
 }
