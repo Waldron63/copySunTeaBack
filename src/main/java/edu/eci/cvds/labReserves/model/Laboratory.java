@@ -1,7 +1,10 @@
 package edu.eci.cvds.labReserves.model;
 
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 public class Laboratory {
 
@@ -9,12 +12,68 @@ public class Laboratory {
     private String name;
     private int totalCapacity;
     private String location;
+    private ArrayList<Physical> physicalResources;
+    private ArrayList<Software> softwareResources;
+    private ScheduleReference scheduleReference;
 
-    public Laboratory(String name, String abbreviation, int totalCapacity, String location) {
+    public Laboratory() {
+        this.physicalResources = new ArrayList<>();
+        this.softwareResources = new ArrayList<>();
+        this.scheduleReference = new ScheduleReference();
+    }
+
+    public Laboratory(String name, String abbreviation, int totalCapacity, String location, ScheduleReference scheduleReference) {
         this.name = name;
         this.abbreviation = abbreviation;
         this.totalCapacity = totalCapacity;
         this.location = location;
+        this.physicalResources = new ArrayList<>();
+        this.softwareResources = new ArrayList<>();
+        this.scheduleReference = scheduleReference;
+    }
+
+    public boolean validateSchedule(Schedule schedule) {
+        return scheduleReference.isWithinSchedule(schedule);
+    }
+
+    public void setReferenceSchedule(List<DayOfWeek> availableDays, LocalTime openingTime, LocalTime closingTime) {
+        this.scheduleReference = new ScheduleReference(availableDays, openingTime, closingTime);
+    }
+
+    /*public boolean isAvailable(Schedule schedule) {
+        return scheduleReference.isTimeSlotAvailable(schedule);
+    }
+
+    public boolean reserv(Schedule schedule) {
+        return isAvailable(schedule) && scheduleReference.addReservedTimeSlot(schedule);
+    }
+    
+    public boolean cancelReserving(Schedule schedule) {
+        return scheduleReference.removeReservedTimeSlot(schedule);
+    }
+    */
+    
+
+    public void addAvailableDay(DayOfWeek day) {
+        scheduleReference.addAvailableDay(day);
+    }
+    
+
+
+    public void addPhysicalResource(Physical resource) {
+        physicalResources.add(resource);
+    }
+    
+    public void removePhysicalResource(Physical resource) {
+        physicalResources.remove(resource);
+    }
+    
+    public void addSoftwareResource(Software resource) {
+        softwareResources.add(resource);
+    }
+    
+    public void removeSoftwareResource(Software resource) {
+        softwareResources.remove(resource);
     }
     
     // Getters y setters
@@ -55,7 +114,7 @@ public class Laboratory {
     }
     
     public void setPhysicalResources(List<Physical> physicalResources) {
-        this.physicalResources = physicalResources;
+        this.physicalResources = new ArrayList<>(physicalResources);
     }
     
     public List<Software> getSoftwareResources() {
@@ -63,7 +122,15 @@ public class Laboratory {
     }
     
     public void setSoftwareResources(List<Software> softwareResources) {
-        this.softwareResources = softwareResources;
+        this.softwareResources = new ArrayList<>(softwareResources);
+    }
+    
+    public ScheduleReference getScheduleReference() {
+        return scheduleReference;
+    }
+    
+    public void setScheduleReference(ScheduleReference scheduleReference) {
+        this.scheduleReference = scheduleReference;
     }
 
 
