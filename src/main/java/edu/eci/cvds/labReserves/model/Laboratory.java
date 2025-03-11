@@ -36,7 +36,7 @@ public class Laboratory {
     }
 
     public boolean validateSchedule(Schedule schedule) {
-        DayOfWeek scheduleDay = schedule.getDay().getDayOfWeek();
+        DayOfWeek scheduleDay = schedule.getDay();
         for (ScheduleReference ref : scheduleReferences) {
             if (ref.getDayOfWeek().equals(scheduleDay) && ref.isWithinSchedule(schedule)) {
                 return true;

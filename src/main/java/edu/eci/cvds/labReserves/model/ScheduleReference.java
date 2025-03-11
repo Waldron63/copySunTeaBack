@@ -32,7 +32,7 @@ public class ScheduleReference {
 
 
     public boolean isWithinSchedule(Schedule schedule) {
-        DayOfWeek scheduleDay = schedule.getDay().getDayOfWeek();
+        DayOfWeek scheduleDay = schedule.getDay();
         if (!dayOfWeek.equals(scheduleDay)) {
             return false;
         }
@@ -40,7 +40,7 @@ public class ScheduleReference {
     }
 
     public boolean isAvailable(Schedule schedule) {
-        DayOfWeek scheduleDay = schedule.getDay().getDayOfWeek();
+        DayOfWeek scheduleDay = schedule.getDay();
         LocalTime scheduleStartTime = schedule.getStartHour();
         LocalTime scheduleEndTime = schedule.getEndHour();
 
@@ -49,72 +49,6 @@ public class ScheduleReference {
 
         return isDayAvailable && isTimeWithinRange;
     }
-
-
-    /*
-    
-    public boolean isWithinOperatingHours(Schedule schedule) {
-
-        boolean dayAvailable = availableDays.contains(schedule.getDay());
-    
-        if (!dayAvailable) {
-            return false;
-        }
-        
-        return !schedule.getStartHour().before(openingTime) && 
-               !schedule.getEndHour().after(closingTime);
-    }
-    
-
-    public boolean isTimeSlotAvailable(Schedule schedule) {
-        if (!isWithinOperatingHours(schedule)) {
-            return false;
-        }
-
-        if (!availableDays.contains(schedule.getDay())) {
-            return false;
-        }
-
-        // overlaps sirve para ver si dos horarios chocan
-        
-        for (Schedule reserved : reservedTimes) {
-            if (reserved.overlaps(schedule)) {
-                return false;
-            }
-        }
-        
-        return true;
-    }
-
-    public boolean overlaps(Schedule other) {
-        if (!isSameDay(this.day, other.day)) {
-            return false;
-        }
-        
-        return !(this.endHour.before(other.startHour) || 
-                 this.startHour.after(other.endHour));
-    }
-    
-    
-    public boolean addReservedTimeSlot(Schedule schedule) {
-        if (isTimeSlotAvailable(schedule)) {
-            reservedTimes.add(schedule);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean removeReservedTimeSlot(Schedule schedule) {
-        return reservedTimes.remove(schedule);
-    }
-    
-    public void addAvailableDay(Date day) {
-        if (!availableDays.contains(day)) {
-            availableDays.add(day);
-        }
-    }
-    */
-
 
 
     // Getters y setters
