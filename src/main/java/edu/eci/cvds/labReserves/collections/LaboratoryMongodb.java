@@ -1,46 +1,31 @@
 package edu.eci.cvds.labReserves.collections;
+
 import edu.eci.cvds.labReserves.model.Laboratory;
 import edu.eci.cvds.labReserves.model.Resource;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
+/**
+ * LaboratoryMongodb class specifically for MongoDB persistence.
+ * This class maps to the "laboratories" collection in MongoDB.
+ */
 @Document(collection = "laboratory")
 public class LaboratoryMongodb extends Laboratory {
 
-    private String name;
-    private String abbreviation;
-    private int totalCapacity;
-    private String location;
-    private List<Resource> resources;
+    private String name; //name of laboratory
+    private String abbreviation; //abreviation of laboratory
+    private int totalCapacity; //total of chairs for students inside the laboratory
+    private String location; //what's the build and floor of laboratory
+    private List<Resource> resources; //list of resources (physical and software)
     private List<ScheduleReference> scheduleReferences;
 
-
+    /**
+     * Constructs a LaboratoryMongodb instance based on a Schedule object.
+     *
+     * @param laboratory the Laboratory object to copy properties from
+     */
     public LaboratoryMongodb() {
         super();
-    }
-    public String getName(){
-        return super.getName();
-    }
-    public void setName(String name){
-        super.setName(name);
-    }
-    public String getAbbreviation(){
-        return super.geAbbreviation();
-    }
-    public void setAbbreviation(String abbreviation){
-        super.setAbbreviation(abbreviation);
-    }
-    public int getTotalCapacity(){
-        return super.getTotalCapacity();
-    }
-    public void setTotalCapacity(int totalCapacity){
-        super.setName(totalCapacity);
-    }
-    public String getLocation(){
-        return super.getLocation();
-    }
-    public void setLocation(String location){
-        super.setLocation(location);
     }
 }
 
