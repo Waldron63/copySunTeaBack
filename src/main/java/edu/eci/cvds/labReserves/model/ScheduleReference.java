@@ -10,21 +10,21 @@ public class ScheduleReference {
     
     private LocalTime openingTime;
     private LocalTime closingTime;
-    private List<DayOfWeek> availableDays;
+    private DayOfWeek dayOfWeek;
     //private List<Schedule> reservedTimes;
 
     public ScheduleReference() {
         this.openingTime = null;
         this.closingTime = null;
-        this.availableDays = new ArrayList<>();
+        this.dayOfWeek = null;
         //this.reservedTimes = new ArrayList<>();
     }
     
     
-    public ScheduleReference(List<DayOfWeek> availableDays, LocalTime openingTime, LocalTime closingTime) {
+    public ScheduleReference(DayOfWeek dayOfWeek, LocalTime openingTime, LocalTime closingTime) {
         this.openingTime = openingTime;
         this.closingTime = closingTime;
-        this.availableDays = availableDays;
+        this.dayOfWeek = dayOfWeek;
         //this.reservedTimes = new ArrayList<>();
     }
 
@@ -33,18 +33,18 @@ public class ScheduleReference {
 
     public boolean isWithinSchedule(Schedule schedule) {
         DayOfWeek scheduleDay = schedule.getDay().getDayOfWeek();
-        if (!availableDays.contains(scheduleDay)) {
+        if (!dayOfWeek.equals(scheduleDay)) {
             return false;
         }
         return !schedule.getStartHour().isBefore(openingTime) && !schedule.getEndHour().isAfter(closingTime);
     }
 
     public boolean isAvailable(Schedule schedule) {
-        DayOfWeek day = schedule.getDay().getDayOfWeek();
+        DayOfWeek scheduleDay = schedule.getDay().getDayOfWeek();
         LocalTime scheduleStartTime = schedule.getStartHour();
         LocalTime scheduleEndTime = schedule.getEndHour();
 
-        boolean isDayAvailable = availableDays.contains(day);
+        boolean isDayAvailable = dayOfWeek.equals(scheduleDay);
         boolean isTimeWithinRange = !scheduleStartTime.isBefore(this.openingTime) && !scheduleEndTime.isAfter(this.closingTime);
 
         return isDayAvailable && isTimeWithinRange;
@@ -135,12 +135,12 @@ public class ScheduleReference {
         this.closingTime = closingTime;
     }
     
-    public List<DayOfWeek> getAvailableDays() {
-        return availableDays;
+    public DayOfWeek getDayOfWeek() {
+        return dayOfWeek;
     }
     
-    public void setAvailableDays(List<DayOfWeek> availableDays) {
-        this.availableDays = availableDays;
+    public void setDayOfWeek(DayOfWeek dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
     
     /*public List<Schedule> getreservedTimes() {
@@ -149,11 +149,12 @@ public class ScheduleReference {
     
     public void setreservedTimes(List<Schedule> reservedTimes) {
         this.reservedTimes = reservedTimes;
-    }*/
+    }
 
     public void addAvailableDay(DayOfWeek day) {
-        if (!availableDays.contains(day)) {
-            availableDays.add(day);
+        if (!dayOfWeek.contains(day)) {
+            dayOfWeek.add(day);
         }
     }
+        */
 }

@@ -3,8 +3,11 @@ package edu.eci.cvds.labReserves.model;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Date;
+import java.util.Map;
+
 
 public class Laboratory {
 
@@ -14,30 +17,36 @@ public class Laboratory {
     private String location;
     private ArrayList<Physical> physicalResources;
     private ArrayList<Software> softwareResources;
-    private ScheduleReference scheduleReference;
+    private List<ScheduleReference> scheduleReferences;
 
     public Laboratory() {
         this.physicalResources = new ArrayList<>();
         this.softwareResources = new ArrayList<>();
-        this.scheduleReference = new ScheduleReference();
+        this.scheduleReferences = new ArrayList<>();
     }
 
-    public Laboratory(String name, String abbreviation, int totalCapacity, String location, ScheduleReference scheduleReference) {
+    public Laboratory(String name, String abbreviation, int totalCapacity, String location, List<ScheduleReference> scheduleReferences) {
         this.name = name;
         this.abbreviation = abbreviation;
         this.totalCapacity = totalCapacity;
         this.location = location;
         this.physicalResources = new ArrayList<>();
         this.softwareResources = new ArrayList<>();
-        this.scheduleReference = scheduleReference;
+        this.scheduleReferences = scheduleReferences;
     }
 
     public boolean validateSchedule(Schedule schedule) {
-        return scheduleReference.isWithinSchedule(schedule);
+        DayOfWeek scheduleDay = schedule.getDay().getDayOfWeek();
+        for (ScheduleReference ref : scheduleReferences) {
+            if (ref.getDayOfWeek().equals(scheduleDay) && ref.isWithinSchedule(schedule)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public void setReferenceSchedule(List<DayOfWeek> availableDays, LocalTime openingTime, LocalTime closingTime) {
-        this.scheduleReference = new ScheduleReference(availableDays, openingTime, closingTime);
+    public void setReferenceSchedules(Map<DayOfWeek, ScheduleReference> daySchedules) {
+        this.scheduleReferences = new ArrayList<>(daySchedules.values());
     }
 
     /*public boolean isAvailable(Schedule schedule) {
@@ -52,10 +61,22 @@ public class Laboratory {
         return scheduleReference.removeReservedTimeSlot(schedule);
     }
     */
+
+    public void addScheduleReference(ScheduleReference scheduleReference) {
+        DayOfWeek day = scheduleReference.getDayOfWeek();
+        for (int i = 0; i < scheduleReferences.size(); i++) {
+            if (scheduleReferences.get(i).getDayOfWeek().equals(day)) {
+                scheduleReferences.set(i, scheduleReference);
+                return;
+            }
+        }
+        scheduleReferences.add(scheduleReference);
+    }
     
 
-    public void addAvailableDay(DayOfWeek day) {
-        scheduleReference.addAvailableDay(day);
+    public void addAvailableDay(DayOfWeek day, LocalTime openingTime, LocalTime closingTime) {
+        ScheduleReference reference = new ScheduleReference(day, openingTime, closingTime);
+        addScheduleReference(reference);
     }
     
 
@@ -125,12 +146,21 @@ public class Laboratory {
         this.softwareResources = new ArrayList<>(softwareResources);
     }
     
-    public ScheduleReference getScheduleReference() {
-        return scheduleReference;
+    public List<ScheduleReference> getScheduleReferences() {
+        return scheduleReferences;
     }
     
-    public void setScheduleReference(ScheduleReference scheduleReference) {
-        this.scheduleReference = scheduleReference;
+    public void setScheduleReferences(List<ScheduleReference> scheduleReferences) {
+        this.scheduleReferences = scheduleReferences;
+    }
+
+    public ScheduleReference getScheduleReferenceForDay(DayOfWeek day) {
+        for (ScheduleReference ref : scheduleReferences) {
+            if (ref.getDayOfWeek().equals(day)) {
+                return ref;
+            }
+        }
+        return null;
     }
 
 
