@@ -3,6 +3,7 @@ package edu.eci.cvds.labReserves.controller;
 import edu.eci.cvds.labReserves.collections.ReserveMongodb;
 import edu.eci.cvds.labReserves.model.LabReserveException;
 import edu.eci.cvds.labReserves.model.Reserve;
+import edu.eci.cvds.labReserves.model.Schedule;
 import edu.eci.cvds.labReserves.model.User;
 import edu.eci.cvds.labReserves.services.ReserveService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.DayOfWeek;
+import java.time.Month;
 import java.util.List;
 
 
@@ -24,54 +26,75 @@ import java.util.List;
  * It provides endpoints to create, retrieve, update, and delete reserves.
  */
 @RestController
-@RequestMapping("/reserve")
+@RequestMapping("/api/reserve")
 public class ReserveController {
 
     @Autowired
     private ReserveService reserveService;
 
-    @GetMapping("/{}")
-    public void reserve() {
-        return ;
-    }
-
-    @PostMapping("/{}")
+    @PostMapping("")
     public Reserve createReserve(@RequestBody Reserve reserve) throws LabReserveException {
         return reserveService.saveReserve(reserve);
     }
 
-    @DeleteMapping("/{}")
-    public void deleteReserveBySchedule(@PathVariable int id) throws LabReserveException {
-        //return reserveService.deleteReserveBySchedule();
-        return;
+    @DeleteMapping("/schedules")
+    public void deleteReserveBySchedule(@RequestBody Schedule schedule) throws LabReserveException {
+        reserveService.deleteReserveBySchedule(schedule);
     }
 
-    @DeleteMapping("/{}")
-    public void deleteReserveByUser(@PathVariable int id) throws LabReserveException {
-        //reserveService.deleteAllReserveByUser();
-        return;
+    /**
+     * Deletes all reserves by user ID.
+     */
+    @DeleteMapping("/users/{userId}")
+    public void deleteReserveByUser(@PathVariable String userId) throws LabReserveException {
+        reserveService.deleteAllReserveByUser(userId);
     }
 
-    @GetMapping("/{}")
-    public List<ReserveMongodb> getAllReserves(@PathVariable int id) throws LabReserveException {
+    /**
+     * Retrieves all reserves.
+     */
+    @GetMapping("/all")
+    public List<ReserveMongodb> getAllReserves() throws LabReserveException {
         return reserveService.getAllReserves();
     }
 
-    @GetMapping("/{}")
-    public Reserve getReserveByUser(@PathVariable String user) throws LabReserveException {
-        //return reserveService.getReserveByUser(user);
-        return null;
+    /**
+     * Retrieves reserves by laboratory abbreviation.
+     */
+    @GetMapping("/lab/{labAbbreviation}")
+    public List<ReserveMongodb> getReserveByLaboratory(@PathVariable String labAbbreviation) throws LabReserveException {
+        return reserveService.getReserveByLaboratory(labAbbreviation);
     }
 
-    @GetMapping("/{}")
-    public Reserve getReserveByDay(@PathVariable DayOfWeek id) throws LabReserveException {
-        //return reserveService.getReserveByDay(id);
-        return null;
+    /**
+     * Retrieves reserves by user ID.
+     */
+    @GetMapping("/user/{userId}")
+    public List<ReserveMongodb> getReserveByUser(@PathVariable String userId) throws LabReserveException {
+        return reserveService.getReserveByUser(userId);
     }
 
-    @GetMapping("/{}")
-    public Reserve getReserveByMonth(@PathVariable String month) throws LabReserveException {
-        //return reserveService.getReserveByLaboratory(month);
-        return null;
+    /**
+     * Retrieves reserves by day (as a string to avoid enum issues).
+     */
+    @GetMapping("/schedules/day/{day}")
+    public List<ReserveMongodb> getReserveByDay(@PathVariable DayOfWeek day) throws LabReserveException {
+        return reserveService.getReserveByDay(day);
+    }
+
+    /**
+     * Retrieves reserves by month (as a string to avoid enum issues).
+     */
+    @GetMapping("/schedules/month/{month}")
+    public List<ReserveMongodb> getReserveByMonth(@PathVariable Month month) throws LabReserveException {
+        return reserveService.getReserveByMonth(month);
+    }
+
+    /**
+     * Retrieves a reserve by its ID.
+     */
+    @GetMapping("/id/{id}")
+    public ReserveMongodb getReserveById(@PathVariable int id) throws LabReserveException {
+        return reserveService.getReserveById(id);
     }
 }

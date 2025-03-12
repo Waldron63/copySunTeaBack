@@ -23,7 +23,7 @@ public class Schedule {
     private Month month; //month that generate resource
     private int year; //year that generate resource
 
-
+    private Laboratory laboratory; //laboratory that resolve some reserves
 
     /**
      * Default constructor.
@@ -201,5 +201,21 @@ public class Schedule {
      */
     public void setId(int id) {
         this.id = id;
+    }
+
+    /**
+     * Sets the Laboratory of the schedule.
+     * @param laboratory The schedule ID
+     */
+    public void setLaboratory(Laboratory laboratory) {
+        this.laboratory = laboratory;
+    }
+
+    /**
+     * Gets the Laboratory of the schedule.
+     * @return The Laboratory
+     */
+    public Laboratory getLaboratory() {
+        return laboratory;
     }
 }

@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Repository
 public interface ReserveMongoRepository extends MongoRepository<ReserveMongodb, String>{
-    /**
+    
     // cancalar reserva
     void deleteByScheduleStartHour(String startHour);
 
@@ -26,5 +26,5 @@ public interface ReserveMongoRepository extends MongoRepository<ReserveMongodb, 
 
     // buscar reservas por usuario
     List<Reserve> searchByUser_id(String user_id);
-    */
+    
 }

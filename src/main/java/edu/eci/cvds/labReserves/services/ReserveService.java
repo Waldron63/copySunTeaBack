@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
+import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,28 +41,62 @@ public class ReserveService{
         return reserveRepo.save(resMongo);
     }
 
-    public void deleteReserveBySchedule() throws LabReserveException {
-        //reserveRepo.deleteBySchedule_id();
+    public void deleteReserveBySchedule(Schedule schedule) throws LabReserveException {
+        reserveRepo.deleteBySchedule(schedule);
     }
 
-    public void deleteAllReserveByUser() throws LabReserveException {
-        return;
+    public void deleteAllReserveByUser(String userId) throws LabReserveException {
+        reserveRepo.deleteAllByUserId(userId);
     }
 
     public List<ReserveMongodb> getAllReserves() throws LabReserveException {
         return reserveRepo.findAll();
     }
 
-    public List<ReserveMongodb> getReserveByLaboratory(String laboratoryName) throws LabReserveException {
-        return null;
+    public List<ReserveMongodb> getReserveByLaboratory(String laboratoryAbbreviation) throws LabReserveException {
+        return reserveRepo.findByLaboratoryName(laboratoryAbbreviation);
+        /**List<ReserveMongodb> labReserves = new ArrayList<ReserveMongodb>();
+        List<ReserveMongodb> reserves = reserveRepo.findAll();
+        for (ReserveMongodb reserveMongodb : reserves) {
+            String abreviation = reserveMongodb.getSchedule().getLaboratory().getAbbreviation();
+            if (abreviation.equals(laboratoryAbbreviation)) {
+                labReserves.add(reserveMongodb);
+            }
+        }
+        return labReserves;*/
     }
 
-    public ReserveMongodb getReserveByUser(String user_id) throws LabReserveException {
-        return null;
+    public List<ReserveMongodb> getReserveByUser(String userId) throws LabReserveException {
+        return reserveRepo.findByUserId(userId);
     }
 
     public List<ReserveMongodb> getReserveByDay(DayOfWeek day) throws LabReserveException {
-        return null;
+        return reserveRepo.findByDay(day);
+        /**List<ReserveMongodb> labReserves = new ArrayList<ReserveMongodb>();
+        List<ReserveMongodb> reserves = reserveRepo.findAll();
+        for (ReserveMongodb reserveMongodb : reserves) {
+            DayOfWeek dayReserves = reserveMongodb.getSchedule().getDay();
+            if (day.equals(dayReserves)) {
+                labReserves.add(reserveMongodb);
+            }
+        }
+        return labReserves; */
     }
 
+    public List<ReserveMongodb> getReserveByMonth(Month month) throws LabReserveException {
+        return reserveRepo.findByMonth(month);
+        /**List<ReserveMongodb> labReserves = new ArrayList<ReserveMongodb>();
+         List<ReserveMongodb> reserves = reserveRepo.findAll();
+         for (ReserveMongodb reserveMongodb : reserves) {
+         Month monthReserves = reserveMongodb.getSchedule().getMonth();
+         if (month.equals(monthReserves)) {
+         labReserves.add(reserveMongodb);
+         }
+         }
+         return labReserves; */
+    }
+
+    public ReserveMongodb getReserveById(int id) throws LabReserveException {
+        return reserveRepo.findById(id);
+    }
 }
