@@ -14,7 +14,7 @@ public class ScheduleMongodb extends Schedule {
     @Id
     private int id; //id of schedule (autogenerate)
     @DBRef
-    private int laboratory_id; //id of laboratory
+    private String laboratoryName; //name of laboratory
 
     /**
      * Constructs a ScheduleMongodb instance based on a Schedule object.
@@ -25,8 +25,6 @@ public class ScheduleMongodb extends Schedule {
         super(schedule.getStartHour(), schedule.getNumberDay(),
                 schedule.getDay(), schedule.getMonth(), schedule.getYear());
         this.id = schedule.getId();
+        this.laboratoryName = schedule.getLaboratory().getAbbreviation();
     }
-
-
-
 }

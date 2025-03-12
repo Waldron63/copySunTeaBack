@@ -5,6 +5,9 @@ import edu.eci.cvds.labReserves.model.Resource;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
+import edu.eci.cvds.labReserves.model.ScheduleReference;
+
+
 /**
  * LaboratoryMongodb class specifically for MongoDB persistence.
  * This class maps to the "laboratories" collection in MongoDB.
@@ -21,11 +24,8 @@ public class LaboratoryMongodb extends Laboratory {
 
     /**
      * Constructs a LaboratoryMongodb instance based on a Schedule object.
-     *
-     * @param laboratory the Laboratory object to copy properties from
      */
     public LaboratoryMongodb() {
         super();
     }
 }
-
