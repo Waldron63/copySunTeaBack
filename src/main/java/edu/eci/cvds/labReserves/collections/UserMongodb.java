@@ -1,41 +1,21 @@
 package edu.eci.cvds.labReserves.collections;
+import edu.eci.cvds.labReserves.model.LabReserveException;
+import edu.eci.cvds.labReserves.model.Reserve;
+import edu.eci.cvds.labReserves.model.User;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Document(collection = "user")
-public abstract class UserMongodb{
+public  class UserMongodb extends User {
     @Id
     private int id;
-    private String name;
-    private String mail;
-    private String password;
 
-    public UserMongodb() {
-        super();
-    }
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getMail() {
-        return mail;
-    }
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
+
+    public UserMongodb(User user) throws LabReserveException {
+        super(user.getId(), user.getName(), user.getMail(), user.getPassword(), user.getRol());
     }
 
 }

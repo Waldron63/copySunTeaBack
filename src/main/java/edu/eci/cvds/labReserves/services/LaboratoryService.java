@@ -15,7 +15,4 @@ public class LaboratoryService{
         this.laboratoryRepo = laboratoryRepo;
     }
 
-    public void createLaboratory(){
-        LaboratoryMongoRepository.save();
-    }
 }

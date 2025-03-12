@@ -1,52 +1,205 @@
 package edu.eci.cvds.labReserves.model;
 
-import java.util.Date;
-import java.util.Calendar;
+import java.time.DayOfWeek;
+import java.time.Month;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.YearMonth;
 
+/**
+ * The Schedule class represents a time schedule with a specific time of reserve
+ * It includes information about hours, days, month and year
+ * It includes methods to check if two schedules overlap.
+ */
 public class Schedule {
-    
-    private LocalTime startHour;
-    private LocalTime endHour;
-    private LocalDate day;
-    
-    public Schedule(LocalDate day, LocalTime startHour, LocalTime endHour) {
-        this.day = day;
-        this.startHour = startHour;
-        this.endHour = endHour;
+
+    private int id; //id of schedule (autogenerate)
+
+    private LocalTime startHour; //start of resource
+    private LocalTime endHour; //end of resource
+
+    private int numberDay; //number of day that generate resource
+    private DayOfWeek day; //day that generate resource
+    private Month month; //month that generate resource
+    private int year; //year that generate resource
+
+
+
+    /**
+     * Default constructor.
+     */
+    public Schedule() { }
+
+    /**
+     * Constructs a Schedule object with specified start time, day, month, and year.
+     * @param startHour The start time of the schedule
+     * @param numberDay The day of the month
+     * @param day The day of the week
+     * @param month The month of the year
+     * @param year The year of the schedule
+     * @throws LabReserveException If the provided values are invalid
+     */
+    public Schedule(LocalTime startHour, int numberDay, DayOfWeek day, Month month, int year) throws LabReserveException {
+        setStartHour(startHour);
+        setNumberDay(numberDay);
+        setDay(day);
+        setMonth(month);
+        setYear(year);
     }
 
+    /**
+     * Checks if this schedule overlaps with another schedule.
+     * @param other The other schedule to compare with
+     * @return true if the schedules overlap, false otherwise
+     */
     public boolean overlaps(Schedule other) {
         if (!this.day.equals(other.day)) {
             return false;
         }
         return (startHour.isBefore(other.endHour) && endHour.isAfter(other.startHour));
     }
-    
-    
+
     // Getters y setters
+
+    /**
+     * Gets the start time of the schedule.
+     * @return The start time
+     */
     public LocalTime getStartHour() {
         return startHour;
     }
-    
-    public void setStartHour(LocalTime startHour) {
-        this.startHour = startHour;
+
+    /**
+     * Sets the start time of the schedule.
+     * @param startHour The start time
+     * @throws LabReserveException If the start time is before the current time
+     */
+    public void setStartHour(LocalTime startHour) throws LabReserveException {
+        if (startHour.isAfter(LocalTime.now())) {
+            this.startHour = startHour;
+        } else{
+            throw new LabReserveException(LabReserveException.HOUR_BEFORE_ACTUALLY);
+        }
     }
-    
+
+    /**
+     * Gets the end time of the schedule.
+     * @return The end time
+     */
     public LocalTime getEndHour() {
         return endHour;
     }
-    
+
+    /**
+     * Sets the end time of the schedule.
+     * @param endHour The end time
+     */
     public void setEndHour(LocalTime endHour) {
         this.endHour = endHour;
     }
-    
-    public LocalDate getDay() {
+
+    /**
+     * Gets the day of the month.
+     * @return The day of the month
+     */
+    public int getNumberDay() {
+        return numberDay;
+    }
+
+    /**
+     * Sets the day of the month.
+     * @param numberDay The day of the month
+     * @throws LabReserveException If the day is before the current day
+     */
+    public void setNumberDay(int numberDay) throws LabReserveException {
+        int actNumber = LocalDate.now().getDayOfMonth();
+        if (numberDay >= actNumber && numberDay <= YearMonth.now().lengthOfMonth()) {
+            this.numberDay = numberDay;
+        } else{
+            throw new LabReserveException(LabReserveException.DAY_BEFORE_ACTUALLY);
+        }
+    }
+
+    /**
+     * Gets the day of the week.
+     * @return The day of the week
+     */
+    public DayOfWeek getDay() {
         return day;
     }
-    
-    public void setDay(LocalDate day) {
-        this.day = day;
+
+    /**
+     * Sets the day of the week.
+     * @param day The day of the week
+     * @throws LabReserveException If the day is before the current day
+     */
+    public void setDay(DayOfWeek day) throws LabReserveException {
+        int dayOfWeek = LocalDate.now().getDayOfWeek().getValue();
+        if (day.getValue() >= dayOfWeek) {
+            this.day = day;
+        } else {
+            throw new LabReserveException(LabReserveException.DAY_BEFORE_ACTUALLY);
+        }
+    }
+
+    /**
+     * Gets the month of the schedule.
+     * @return The month of the schedule
+     */
+    public Month getMonth() {
+        return month;
+    }
+
+    /**
+     * Sets the month of the schedule.
+     * @param month The month of the schedule
+     * @throws LabReserveException If the month is before the current month
+     */
+    public void setMonth(Month month) throws LabReserveException {
+        int actually = LocalDate.now().getMonthValue();
+        if (month.getValue() >= actually) {
+            this.month = month;
+        }else {
+            throw new LabReserveException(LabReserveException.MONTH_BEFORE_ACTUALLY);
+        }
+    }
+
+    /**
+     * Gets the year of the schedule.
+     * @return The year of the schedule
+     */
+    public int getYear() {
+        return year;
+    }
+
+    /**
+     * Sets the year of the schedule.
+     * @param year The year of the schedule
+     * @throws LabReserveException If the year is before the current year
+     */
+    public void setYear(int year) throws LabReserveException {
+        LocalDate actually = LocalDate.now();
+        int Actyear = actually.getYear();
+        if (year >= Actyear) {
+            this.year = year;
+        }else{
+            throw new LabReserveException(LabReserveException.YEAR_BEFORE_ACTUALLY);
+        }
+    }
+
+    /**
+     * Gets the ID of the schedule.
+     * @return The schedule ID
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Sets the ID of the schedule.
+     * @param id The schedule ID
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 }

@@ -13,8 +13,5 @@ public class ReserveService{
         this.reserveRepo = reserveRepo;
     }
 
-    public void saveReserve(Reserve reserve){
-        reserveRepo.saveReserve(reserve);
-    }
 
 }
