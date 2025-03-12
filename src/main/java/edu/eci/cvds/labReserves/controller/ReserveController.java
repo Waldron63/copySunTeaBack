@@ -32,7 +32,7 @@ public class ReserveController {
     @Autowired
     private ReserveService reserveService;
 
-    @PostMapping("/reserves")
+    @PostMapping("")
     public Reserve createReserve(@RequestBody Reserve reserve) throws LabReserveException {
         return reserveService.saveReserve(reserve);
     }

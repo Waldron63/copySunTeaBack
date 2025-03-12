@@ -35,7 +35,7 @@ public class Laboratory {
         this.scheduleReferences = scheduleReferences;
     }
 
-    public boolean validateSchedule(Schedule schedule) {
+    /*public boolean validateSchedule(Schedule schedule) {
         DayOfWeek scheduleDay = schedule.getDay();
         for (ScheduleReference ref : scheduleReferences) {
             if (ref.getDayOfWeek().equals(scheduleDay) && ref.isWithinSchedule(schedule)) {
@@ -43,7 +43,7 @@ public class Laboratory {
             }
         }
         return false;
-    }
+    }*/
 
     public void setReferenceSchedules(Map<DayOfWeek, ScheduleReference> daySchedules) {
         this.scheduleReferences = new ArrayList<>(daySchedules.values());

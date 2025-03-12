@@ -4,8 +4,9 @@ import edu.eci.cvds.labReserves.model.Laboratory;
 import edu.eci.cvds.labReserves.model.Resource;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
-
 import edu.eci.cvds.labReserves.model.ScheduleReference;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 
 
 /**
@@ -15,17 +16,29 @@ import edu.eci.cvds.labReserves.model.ScheduleReference;
 @Document(collection = "laboratory")
 public class LaboratoryMongodb extends Laboratory {
 
-    private String name; //name of laboratory
-    private String abbreviation; //abreviation of laboratory
-    private int totalCapacity; //total of chairs for students inside the laboratory
-    private String location; //what's the build and floor of laboratory
-    private List<Resource> resources; //list of resources (physical and software)
+    @Field("name")
+    private String name;
+
+    @Field("abbreviation")
+    private String abbreviation;
+
+    @Field("totalCapacity")
+    private int totalCapacity;
+
+    @Field("location")
+    private String location;
+
+    @Field("resources")
+    private List<Resource> resources;
+
+    @Field("scheduleReferences")
     private List<ScheduleReference> scheduleReferences;
 
     /**
      * Constructs a LaboratoryMongodb instance based on a Schedule object.
      */
-    public LaboratoryMongodb() {
-        super();
+    public LaboratoryMongodb(Laboratory laboratory) {
+        super(laboratory.getName(), laboratory.getAbbreviation(), laboratory.getTotalCapacity(), laboratory.getLocation(), laboratory.getScheduleReferences());
     }
 }
+

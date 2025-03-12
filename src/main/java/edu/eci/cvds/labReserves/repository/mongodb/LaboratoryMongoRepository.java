@@ -16,7 +16,7 @@ import java.util.Optional;
  */
 @Repository
 public interface LaboratoryMongoRepository extends MongoRepository<LaboratoryMongodb, String> {
-    /**
+    
     // consultar detalles del aula
     List<Resource> findAll(Resource resource);
     // consultar horarios disponibles por dia
@@ -25,5 +25,5 @@ public interface LaboratoryMongoRepository extends MongoRepository<LaboratoryMon
     Laboratory findByName(String name);
     // consultar recursos por laboratorio
     List<Resource> findAllByName(String name);
-     */
+    
 }

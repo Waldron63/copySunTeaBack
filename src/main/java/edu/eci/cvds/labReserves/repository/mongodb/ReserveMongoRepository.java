@@ -20,7 +20,10 @@ public interface ReserveMongoRepository extends MongoRepository<ReserveMongodb, 
     void deleteBySchedule(Schedule schedule);
 
     void deleteAllByUserId(String userId);
-
+    /**
+    // cancalar reserva
+    void deleteByScheduleStartHour(String startHour);
+    */
     List<ReserveMongodb> findByLaboratoryName(String laboratoryAbbreviation);
 
     List<ReserveMongodb> findByUserId(String userId);
@@ -30,4 +33,13 @@ public interface ReserveMongoRepository extends MongoRepository<ReserveMongodb, 
     List<ReserveMongodb> findByMonth(Month month);
 
     ReserveMongodb findById(int id);
+    /**
+     *
+     // consultar reservas activas
+     @Query("{ 'state' : 'reserved'}")
+     List<Reserve> searchByState(String state);
+
+     // buscar reservas por usuario
+    List<Reserve> searchByUser_id(String user_id);
+    */
 }
