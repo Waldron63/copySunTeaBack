@@ -30,18 +30,4 @@ public interface ReserveMongoRepository extends MongoRepository<ReserveMongodb, 
     List<ReserveMongodb> findByMonth(Month month);
 
     ReserveMongodb findById(int id);
-    /**
-    // cancalar reserva
-    void deleteByScheduleStartHour(String startHour);
-
-    // guardar o actualizar reservas
-    void saveReserve(Reserve reserve);
-
-    // consultar reservas activas
-    @Query("{ 'state' : 'reserved'}")
-    List<Reserve> searchByState(String state);
-
-    // buscar reservas por usuario
-    List<Reserve> searchByUser_id(String user_id);
-    */
 }
