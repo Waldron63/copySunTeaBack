@@ -9,6 +9,8 @@ public abstract class User {
     private String password;
     private HashSet<Reserve> reserves;
 
+    public User(){}
+
     public User(int id, String name, String mail, String password) {
         this.id = id;
         this.name = name;

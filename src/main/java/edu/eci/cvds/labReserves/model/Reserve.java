@@ -22,6 +22,13 @@ public class Reserve {
 
     /**
      * Constructs a Reserve object with a specified type, reason, and user.
+     */
+    public Reserve() {
+
+    }
+
+    /**
+     * Constructs a Reserve object with a specified type, reason, and user.
      * @param type   The type of the reserve
      * @param reason The reason for the reserve
      * @param user   The user who created the reserve

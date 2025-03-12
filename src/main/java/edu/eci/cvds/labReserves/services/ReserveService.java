@@ -22,15 +22,6 @@ public class ReserveService{
     private ReserveMongoRepository reserveRepo;
 
     /**
-     * Constructor to inject dependencies for ReserveMongoRepository
-     *
-     * @param reserveRepo the repository for MongoDB reserves
-     */
-    public ReserveService(ReserveMongoRepository reserveRepo){
-        this.reserveRepo = reserveRepo;
-    }
-
-    /**
      * Saves a reserve .
      *
      * @param reserve the reserve made of the user

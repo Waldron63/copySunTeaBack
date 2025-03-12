@@ -32,7 +32,7 @@ public class ReserveController {
     @Autowired
     private ReserveService reserveService;
 
-    @PostMapping("")
+    @PostMapping("/reserves")
     public Reserve createReserve(@RequestBody Reserve reserve) throws LabReserveException {
         return reserveService.saveReserve(reserve);
     }
@@ -53,7 +53,7 @@ public class ReserveController {
     /**
      * Retrieves all reserves.
      */
-    @GetMapping("/all")
+    @GetMapping("/reserves")
     public List<ReserveMongodb> getAllReserves() throws LabReserveException {
         return reserveService.getAllReserves();
     }
@@ -69,7 +69,7 @@ public class ReserveController {
     /**
      * Retrieves reserves by user ID.
      */
-    @GetMapping("/user/{userId}")
+    @GetMapping("/users/{userId}")
     public List<ReserveMongodb> getReserveByUser(@PathVariable String userId) throws LabReserveException {
         return reserveService.getReserveByUser(userId);
     }
@@ -93,7 +93,7 @@ public class ReserveController {
     /**
      * Retrieves a reserve by its ID.
      */
-    @GetMapping("/id/{id}")
+    @GetMapping("/reserves/{id}")
     public ReserveMongodb getReserveById(@PathVariable int id) throws LabReserveException {
         return reserveService.getReserveById(id);
     }
