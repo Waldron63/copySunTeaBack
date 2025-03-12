@@ -77,52 +77,5 @@ public class LaboratoryController {
     }
 
 
-    /**
-     * POST /api/laboratories/{abbreviation}/reserve : Reservar un laboratorio.
-     *
-     * @param abbreviation abreviatura del laboratorio.
-     * @param reservationRequest detalles de la reserva.
-     * @return ResponseEntity con estado 200 (OK) si la reserva fue exitosa,
-     *         o 400 (Solicitud incorrecta) si el laboratorio no está disponible.
-     */
-    @PostMapping("/{abbreviation}/reserve")
-    public ResponseEntity<Boolean> reserveLaboratory(
-            @PathVariable String abbreviation,
-            @RequestBody ReservationRequest reservationRequest) {
-        
-        boolean reserved = laboratoryService.reserveLaboratory(
-                abbreviation,
-                reservationRequest.getSchedule(),
-                reservationRequest.getUserId(),
-                reservationRequest.getPurpose());
-        
-        if (reserved) {
-            return new ResponseEntity<>(true, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    /**
-     * DELETE /api/laboratories/reservations/{reservationId} : Cancelar una reserva.
-     *
-     * @param reservationId ID de la reserva a cancelar.
-     * @param userId ID del usuario que cancela la reserva.
-     * @return ResponseEntity con estado 200 (OK) si la cancelación fue exitosa,
-     *         o 400 (Solicitud incorrecta) si falló la cancelación.
-     */
-    @DeleteMapping("/reservations/{reservationId}")
-    public ResponseEntity<Boolean> cancelReservation(
-            @PathVariable String reservationId,
-            @RequestParam String userId) {
-        
-        boolean canceled = laboratoryService.cancelReservation(reservationId, userId);
-        
-        if (canceled) {
-            return new ResponseEntity<>(true, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
-        }
-    }
 
 }
