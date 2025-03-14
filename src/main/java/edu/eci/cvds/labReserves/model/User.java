@@ -1,6 +1,6 @@
 package edu.eci.cvds.labReserves.model;
 
-
+import java.util.*;
 
 import java.util.*;
 
@@ -39,57 +39,29 @@ public class User {
      */
     public void setId(int id) {
         this.id = id;
+        this.name = name;
+        this.mail = mail;
+        this.password = password;
     }
 
-
-    /**
-     * get the name of a user
-     * @return the name of the user
-     */
-    public String getName() {
+    public String getName(){
         return name;
     }
 
-    /**
-     * set the name for a user
-     * @param name
-     */
-    public void setName(String name) {
+    public void setName(String name){
         this.name = name;
     }
-
-
-    /**
-     * get the mail of a user
-     * @return the user mail
-     */
-    public String getMail() {
+    public String getMail(){
         return mail;
     }
-
-
-    /**
-     * set the email for a user
-     * @param mail
-     */
-    public void setMail(String mail) {
+    public void setMail(String mail){
         this.mail = mail;
     }
 
-
-    /**
-     * get the password of a user
-     * @return the password of the user
-     */
     public String getPassword() {
         return password;
     }
 
-
-    /**
-     * set a new password for a user
-     * @param password
-     */
     public void setPassword(String password) {
         this.password = password;
     }

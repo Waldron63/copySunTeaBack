@@ -8,6 +8,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * The {@code UserService} class provides business logic for managing reserves within the application.
+ * It handles operations related to User, including creating, updating, deleting, and retrieving.
+ */
 @Service
 public class UserService{
     @Autowired

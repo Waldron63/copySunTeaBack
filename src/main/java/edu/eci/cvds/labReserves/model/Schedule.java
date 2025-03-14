@@ -72,7 +72,7 @@ public class Schedule {
     /**
      * Sets the start time of the schedule.
      * @param startHour The start time
-     * @throws LabReserveException If the start time is before the current time
+      * @throws LabReserveException If the start time is before the current time
      */
     public void setStartHour(LocalTime startHour) throws LabReserveException {
         if (startHour.isAfter(LocalTime.now())) {
@@ -109,7 +109,7 @@ public class Schedule {
     /**
      * Sets the day of the month.
      * @param numberDay The day of the month
-     * @throws LabReserveException If the day is before the current day
+      * @throws LabReserveException If the day is before the current day
      */
     public void setNumberDay(int numberDay) throws LabReserveException {
         int actNumber = LocalDate.now().getDayOfMonth();

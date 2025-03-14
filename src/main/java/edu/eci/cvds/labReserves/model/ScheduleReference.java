@@ -7,7 +7,7 @@ import java.util.List;
 import java.time.LocalTime;
 
 public class ScheduleReference {
-
+    
     private LocalTime openingTime;
     private LocalTime closingTime;
     private DayOfWeek dayOfWeek;
@@ -19,8 +19,8 @@ public class ScheduleReference {
         this.dayOfWeek = null;
         //this.reservedTimes = new ArrayList<>();
     }
-
-
+    
+    
     public ScheduleReference(DayOfWeek dayOfWeek, LocalTime openingTime, LocalTime closingTime) {
         this.openingTime = openingTime;
         this.closingTime = closingTime;
@@ -52,35 +52,35 @@ public class ScheduleReference {
 
 
     // Getters y setters
-
+    
     public LocalTime getOpeningTime() {
         return openingTime;
     }
-
+    
     public void setOpeningTime(LocalTime openingTime) {
         this.openingTime = openingTime;
     }
-
+    
     public LocalTime getClosingTime() {
         return closingTime;
     }
-
+    
     public void setClosingTime(LocalTime closingTime) {
         this.closingTime = closingTime;
     }
-
+    
     public DayOfWeek getDayOfWeek() {
         return dayOfWeek;
     }
-
+    
     public void setDayOfWeek(DayOfWeek dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
     }
-
+    
     /*public List<Schedule> getreservedTimes() {
         return reservedTimes;
     }
-
+    
     public void setreservedTimes(List<Schedule> reservedTimes) {
         this.reservedTimes = reservedTimes;
     }
