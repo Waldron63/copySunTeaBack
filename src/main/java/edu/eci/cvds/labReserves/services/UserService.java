@@ -17,7 +17,6 @@ public class UserService{
     @Autowired
     private UserMongoRepository userRepo;
 
-    public UserService(UserMongoRepository userRepo){ this.userRepo = userRepo;}
 
     /**
      * Save a user
@@ -25,8 +24,14 @@ public class UserService{
      * @return the saved user
      */
     public User createUser(User user) throws LabReserveException {
-        UserMongodb userMongo = new UserMongodb(user);
-        return userRepo.save(userMongo);
+        try{
+            UserMongodb userMongo = new UserMongodb(user);
+            return userRepo.save(userMongo);
+    
+        } catch(Exception e){
+            e.printStackTrace();
+            throw new LabReserveException("Error al crear el usuario: " + e.getMessage());
+        }
     }
 
     /**

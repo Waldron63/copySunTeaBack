@@ -10,7 +10,7 @@ public class User {
     private String mail;
     private String password;
     private String rol;
-    private List<String> rolType = List.of("teacher", "admin");
+    private Set<String> rolType = Set.of("teacher", "admin");
 
     public User(int id, String name, String mail, String password, String rol) throws LabReserveException {
         this.id = id;
