@@ -47,6 +47,10 @@ public class Reserve {
         this.state = "reserved";
     }
 
+    /**
+     * Sets the schedule of the reserve.
+     * @param schedule The new schedule of the reserve
+     */
     public void setSchedule(int schedule){
         this.scheduleId = schedule;
     }

@@ -11,14 +11,38 @@ import java.time.LocalTime;
 import java.time.Month;
 import java.util.List;
 
+/**
+ * Repository interface for managing ScheduleMongodb entities in MongoDB.
+ * Extends MongoRepository to provide basic CRUD operations.
+ */
 @Repository
-
 public interface ScheduleMongoRepository extends MongoRepository<ScheduleMongodb, String> {
 
+    /**
+     * Finds a ScheduleMongodb entity by its time attributes.
+     *
+     * @param startHour  The start hour of the schedule.
+     * @param numberDay  The numeric representation of the day in the month.
+     * @param day        The day of the week.
+     * @param month      The month of the year.
+     * @param year       The year.
+     * @return The matching ScheduleMongodb entity or null if not found.
+     */
     @Query("{ 'startHour' : ?0, 'numberDay' : ?1, 'day' : ?2, 'month' : ?3, 'year' : ?4 }")
     ScheduleMongodb findByTime(LocalTime startHour, int numberDay, DayOfWeek day, Month month, int year);
 
+    /**
+     * Deletes a ScheduleMongodb entity by its ID.
+     *
+     * @param id The ID of the schedule to delete.
+     */
     void deleteById(int id);
 
+    /**
+     * Finds a ScheduleMongodb entity by its ID.
+     *
+     * @param id The ID of the schedule to find.
+     * @return The matching ScheduleMongodb entity or null if not found.
+     */
     ScheduleMongodb findById(int id);
 }

@@ -18,6 +18,9 @@ public class ReserveMongodb extends Reserve {
     @Id
     private int id; // id of reserve (autogenerate)
 
+    /**
+     * Constructs a ReserveMongodb instance based on a Reserve object.
+     */
     public ReserveMongodb() {
         super();
     }

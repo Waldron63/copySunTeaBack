@@ -2,9 +2,7 @@ package edu.eci.cvds.labReserves.model;
 
 import java.time.DayOfWeek;
 import java.time.Month;
-import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.YearMonth;
 
 /**
  * The Schedule class represents a time schedule with a specific time of reserve
@@ -23,7 +21,7 @@ public class Schedule {
     private Month month; //month that generate resource
     private int year; //year that generate resource
 
-    private Laboratory laboratory; //laboratory that resolve some reserves
+    private String laboratory; //laboratory that resolve some reserves
 
     /**
      * Default constructor.
@@ -39,12 +37,14 @@ public class Schedule {
      * @param year The year of the schedule
      * @throws LabReserveException If the provided values are invalid
      */
-    public Schedule(LocalTime startHour, int numberDay, DayOfWeek day, Month month, int year) throws LabReserveException {
+    public Schedule(LocalTime startHour, int numberDay, DayOfWeek day,
+                    Month month, int year, String laboratory) throws LabReserveException {
         setStartHour(startHour);
         setNumberDay(numberDay);
         setDay(day);
         setMonth(month);
         setYear(year);
+        setLaboratory(laboratory);
     }
 
     /**
@@ -182,15 +182,16 @@ public class Schedule {
      * Sets the Laboratory of the schedule.
      * @param laboratory The schedule ID
      */
-    public void setLaboratory(Laboratory laboratory) {
+    public void setLaboratory(String laboratory) {
         this.laboratory = laboratory;
     }
 
     /**
      * Gets the Laboratory of the schedule.
+     *
      * @return The Laboratory
      */
-    public Laboratory getLaboratory() {
+    public String getLaboratory() {
         return laboratory;
     }
 }

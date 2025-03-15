@@ -18,35 +18,53 @@ import java.util.List;
 @Repository
 public interface ReserveMongoRepository extends MongoRepository<ReserveMongodb, String>{
 
+    /**
+     * Deletes all reservations associated with a specific user ID.
+     *
+     * @param userId The ID of the user whose reservations should be deleted.
+     */
     @Query("{ 'userId' : ?0 }")
     void deleteAllByUserId(int userId);
+
     /**
-    // cancelar reserva
-    void deleteByScheduleStartHour(String startHour);
-    */
-
-    //@Query("{ '' : ?0 }")
-    //List<ReserveMongodb> findByLaboratoryName(String laboratoryAbbreviation);
-
+     * Finds all reservations made by a specific user.
+     *
+     * @param userId The ID of the user.
+     * @return A list of reservations associated with the user.
+     */
     @Query("{ 'userId' : ?0 }")
     List<ReserveMongodb> findByUserId(int userId);
 
+    /**
+     * Finds a reservation by its ID.
+     *
+     * @param id The ID of the reservation.
+     * @return The matching reservation or null if not found.
+     */
     ReserveMongodb findById(int id);
 
+    /**
+     * Deletes a reservation by its ID.
+     *
+     * @param id The ID of the reservation to be deleted.
+     */
     void deleteById(int id);
 
+    /**
+     * Finds a reservation by its schedule ID.
+     *
+     * @param scheduleId The ID of the schedule associated with the reservation.
+     * @return The matching reservation or null if not found.
+     */
     @Query("{ 'scheduleId' : ?0 }")
     ReserveMongodb findByScheduleId(int scheduleId);
 
+    /**
+     * Retrieves all reservations associated with a specific user ID.
+     *
+     * @param userId The ID of the user.
+     * @return A list of all reservations made by the user.
+     */
     @Query("{ 'userId' : ?0 }")
     List<ReserveMongodb> getAllByUserId(int userId);
-    /**
-     *
-     // consultar reservas activas
-     @Query("{ 'state' : 'reserved'}")
-     List<Reserve> searchByState(String state);
-
-     // buscar reservas por usuario
-    List<Reserve> searchByUser_id(String user_id);
-    */
 }
