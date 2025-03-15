@@ -17,22 +17,29 @@ import java.util.List;
  */
 @Repository
 public interface ReserveMongoRepository extends MongoRepository<ReserveMongodb, String>{
-    void deleteBySchedule(Schedule schedule);
 
-    void deleteAllByUserId(String userId);
+    @Query("{ 'userId' : ?0 }")
+    void deleteAllByUserId(int userId);
     /**
-    // cancalar reserva
+    // cancelar reserva
     void deleteByScheduleStartHour(String startHour);
     */
-    List<ReserveMongodb> findByLaboratoryName(String laboratoryAbbreviation);
 
-    List<ReserveMongodb> findByUserId(String userId);
+    //@Query("{ '' : ?0 }")
+    //List<ReserveMongodb> findByLaboratoryName(String laboratoryAbbreviation);
 
-    List<ReserveMongodb> findByDay(DayOfWeek day);
-
-    List<ReserveMongodb> findByMonth(Month month);
+    @Query("{ 'userId' : ?0 }")
+    List<ReserveMongodb> findByUserId(int userId);
 
     ReserveMongodb findById(int id);
+
+    void deleteById(int id);
+
+    @Query("{ 'scheduleId' : ?0 }")
+    ReserveMongodb findByScheduleId(int scheduleId);
+
+    @Query("{ 'userId' : ?0 }")
+    List<ReserveMongodb> getAllByUserId(int userId);
     /**
      *
      // consultar reservas activas

@@ -11,10 +11,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document(collection = "schedule")
 public class ScheduleMongodb extends Schedule {
+
     @Id
     private int id; //id of schedule (autogenerate)
-    @DBRef
-    private String laboratoryName; //name of laboratory
+
+    public ScheduleMongodb() {
+        super();
+    }
 
     /**
      * Constructs a ScheduleMongodb instance based on a Schedule object.
@@ -25,6 +28,10 @@ public class ScheduleMongodb extends Schedule {
         super(schedule.getStartHour(), schedule.getNumberDay(),
                 schedule.getDay(), schedule.getMonth(), schedule.getYear());
         this.id = schedule.getId();
-        this.laboratoryName = schedule.getLaboratory().getAbbreviation();
+    }
+
+    @Override
+    public int getId() {
+        return id;
     }
 }

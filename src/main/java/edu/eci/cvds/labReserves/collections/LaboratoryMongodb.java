@@ -16,24 +16,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document(collection = "laboratory")
 public class LaboratoryMongodb extends Laboratory {
 
-    @Field("name")
-    private String name;
-
-    @Field("abbreviation")
-    private String abbreviation;
-
-    @Field("totalCapacity")
-    private int totalCapacity;
-
-    @Field("location")
-    private String location;
-
-    @Field("resources")
-    private List<Resource> resources;
-
-    @Field("scheduleReferences")
-    private List<ScheduleReference> scheduleReferences;
-
     /**
      * Constructs a LaboratoryMongodb instance based on a Schedule object.
      */

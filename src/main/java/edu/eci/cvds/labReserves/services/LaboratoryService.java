@@ -8,91 +8,96 @@ import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class LaboratorioService {
-
-    private final LaboratorioMongoRepository laboratorioRepository;
+public class LaboratoryService {
 
     @Autowired
-    public LaboratorioService(LaboratorioMongoRepository laboratorioRepository) {
-        this.laboratorioRepository = laboratorioRepository;
-    }
+    private LaboratoryMongoRepository laboratoryRepository;
 
     // Crea un nuevo laboratorio en la base de datos
     public Laboratory createLaboratory(Laboratory laboratory) {
         LaboratoryMongodb labMongo = new LaboratoryMongodb(laboratory);
-        return laboratorioRepository.save(labMongo);
+        return laboratoryRepository.save(labMongo);
     }
 
     // Obtiene todos los laboratorios
     public List<Laboratory> getAllLaboratories() {
-        return laboratorioRepository.findAll();
+        List<LaboratoryMongodb> mongoList = laboratoryRepository.findAll();
+        List<Laboratory> result = new ArrayList<>();
+
+        for (LaboratoryMongodb mongo : mongoList) {
+            Laboratory lab = new Laboratory();
+            lab.setName(mongo.getName());
+            lab.setAbbreviation(mongo.getAbbreviation());
+            lab.setTotalCapacity(mongo.getTotalCapacity());
+            lab.setLocation(mongo.getLocation());
+            lab.setScheduleReferences(mongo.getScheduleReferences());
+            result.add(lab);
+        }
+
+        return result;
     }
 
     // Busca un laboratorio por su abreviatura
     public Laboratory getLaboratoryByAbbreviation(String abbreviation) {
-        return laboratorioRepository.findByAbbreviation(abbreviation);
+        return laboratoryRepository.findByAbbreviation(abbreviation);
     }
 
     // Actualiza un laboratorio existente
     public Laboratory updateLaboratory(String abbreviation, Laboratory updatedLab) {
-        LaboratoryMongodb existingLab = laboratorioRepository.findByAbbreviation(abbreviation);
-        
+        LaboratoryMongodb existingLab = laboratoryRepository.findByAbbreviation(abbreviation);
+
         if (existingLab != null) {
             existingLab.setName(updatedLab.getName());
             existingLab.setTotalCapacity(updatedLab.getTotalCapacity());
             existingLab.setLocation(updatedLab.getLocation());
             existingLab.setScheduleReferences(updatedLab.getScheduleReferences());
-            
-            return laboratorioRepository.save(existingLab);
+
+            return laboratoryRepository.save(existingLab);
         }
-        
+
         return null;
     }
 
     // Elimina un laboratorio por su abreviatura
     public boolean deleteLaboratory(String abbreviation) {
-        if (laboratorioRepository.existsByAbbreviation(abbreviation)) {
-            laboratorioRepository.deleteByAbbreviation(abbreviation);
+        if (laboratoryRepository.existsByAbbreviation(abbreviation)) {
+            laboratoryRepository.deleteByAbbreviation(abbreviation);
             return true;
         }
         return false;
     }
 
     // Agrega un horario disponible a un laboratorio
-    public Laboratory addAvailableDay(String abbreviation, DayOfWeek day, LocalTime openingTime, 
+    public Laboratory addAvailableDay(String abbreviation, DayOfWeek day, LocalTime openingTime,
                                       LocalTime closingTime) {
-        LaboratoryMongodb lab = laboratorioRepository.findByAbbreviation(abbreviation);
-        
+        LaboratoryMongodb lab = laboratoryRepository.findByAbbreviation(abbreviation);
+
         if (lab != null) {
             lab.addAvailableDay(day, openingTime, closingTime);
-            return laboratorioRepository.save(lab);
+            return laboratoryRepository.save(lab);
         }
-        
+
         return null;
     }
 
     // Verifica si un laboratorio está disponible para un horario específico
     public boolean isLaboratoryAvailable(String abbreviation, Schedule schedule) {
         Laboratory lab = getLaboratoryByAbbreviation(abbreviation);
-        
+
         if (lab != null) {
             ScheduleReference scheduleRef = lab.getScheduleReferenceForDay(schedule.getDay());
-            
+
             if (scheduleRef != null) {
                 return scheduleRef.isAvailable(schedule);
             }
         }
-        
-        return false;
-    }
 
-    // Busca laboratorios con capacidad suficiente
-    public List<Laboratory> getLaboratoriesByMinCapacity(int capacity) {
-        return laboratorioRepository.findByTotalCapacityGreaterThanEqual(capacity);
+        return false;
     }
 }

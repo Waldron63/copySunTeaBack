@@ -72,14 +72,10 @@ public class Schedule {
     /**
      * Sets the start time of the schedule.
      * @param startHour The start time
-      * @throws LabReserveException If the start time is before the current time
+     * @throws LabReserveException If the start time is before the current time
      */
     public void setStartHour(LocalTime startHour) throws LabReserveException {
-        if (startHour.isAfter(LocalTime.now())) {
-            this.startHour = startHour;
-        } else{
-            throw new LabReserveException(LabReserveException.HOUR_BEFORE_ACTUALLY);
-        }
+        this.startHour = startHour;
     }
 
     /**
@@ -109,15 +105,10 @@ public class Schedule {
     /**
      * Sets the day of the month.
      * @param numberDay The day of the month
-      * @throws LabReserveException If the day is before the current day
+     * @throws LabReserveException If the day is before the current day
      */
     public void setNumberDay(int numberDay) throws LabReserveException {
-        int actNumber = LocalDate.now().getDayOfMonth();
-        if (numberDay >= actNumber && numberDay <= YearMonth.now().lengthOfMonth()) {
-            this.numberDay = numberDay;
-        } else{
-            throw new LabReserveException(LabReserveException.DAY_BEFORE_ACTUALLY);
-        }
+        this.numberDay = numberDay;
     }
 
     /**
@@ -134,12 +125,7 @@ public class Schedule {
      * @throws LabReserveException If the day is before the current day
      */
     public void setDay(DayOfWeek day) throws LabReserveException {
-        int dayOfWeek = LocalDate.now().getDayOfWeek().getValue();
-        if (day.getValue() >= dayOfWeek) {
-            this.day = day;
-        } else {
-            throw new LabReserveException(LabReserveException.DAY_BEFORE_ACTUALLY);
-        }
+        this.day = day;
     }
 
     /**
@@ -156,12 +142,7 @@ public class Schedule {
      * @throws LabReserveException If the month is before the current month
      */
     public void setMonth(Month month) throws LabReserveException {
-        int actually = LocalDate.now().getMonthValue();
-        if (month.getValue() >= actually) {
-            this.month = month;
-        }else {
-            throw new LabReserveException(LabReserveException.MONTH_BEFORE_ACTUALLY);
-        }
+        this.month = month;
     }
 
     /**
@@ -178,13 +159,7 @@ public class Schedule {
      * @throws LabReserveException If the year is before the current year
      */
     public void setYear(int year) throws LabReserveException {
-        LocalDate actually = LocalDate.now();
-        int Actyear = actually.getYear();
-        if (year >= Actyear) {
-            this.year = year;
-        }else{
-            throw new LabReserveException(LabReserveException.YEAR_BEFORE_ACTUALLY);
-        }
+        this.year = year;
     }
 
     /**
