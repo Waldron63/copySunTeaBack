@@ -106,7 +106,7 @@ public class UserService{
      * @return
      */
     public User changeUserRol(String newRol, User user) throws LabReserveException {
-        user.setMail(newRol);
+        user.setRol(newRol);
         UserMongodb userMongodb = new UserMongodb(user);
         return userRepo.save(userMongodb);
     }
@@ -117,7 +117,7 @@ public class UserService{
      *
      */
     public void deleteUser(User user) throws LabReserveException {
-        userRepo.delete(userRepo.searchById(user.getId()));
+        userRepo.deleteById(user.getId());
     }
 
 

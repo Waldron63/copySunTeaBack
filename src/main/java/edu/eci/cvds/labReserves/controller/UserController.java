@@ -39,7 +39,7 @@ public class UserController {
      */
     @DeleteMapping("/delete")
     public void deleteUser(@RequestBody User user) throws LabReserveException{
-        userServ.deleteUser(user);
+            userServ.deleteUser(user);
     }
 
     /**
@@ -49,10 +49,13 @@ public class UserController {
      * @return
      * @throws LabReserveException
      */
-    @GetMapping("/{id}/password")
-    public User changePassword(@PathVariable String password,@RequestBody User user) throws LabReserveException {
-        return userServ.changeUserPassword(password,user);
+    @PutMapping("/password/{password}")
+    public User changePassword(@PathVariable String password, @RequestBody User user) throws LabReserveException {
+        return userServ.changeUserPassword(password, user);
     }
+
+
+
 
     /**
      *
@@ -61,7 +64,7 @@ public class UserController {
      * @return
      * @throws LabReserveException
      */
-    @GetMapping("/{id}/mail")
+    @PutMapping("/mail/{mail}")
     public User changeMail(@PathVariable String mail,@RequestBody User user) throws LabReserveException {
         return userServ.changeUserMail(mail,user);
     }
@@ -73,7 +76,7 @@ public class UserController {
      * @return
      * @throws LabReserveException
      */
-    @GetMapping("/{id}/name")
+    @PutMapping("/name/{name}")
     public User changeUserName(@PathVariable String name,@RequestBody User user) throws LabReserveException {
         return userServ.changeUserName(name,user);
     }
@@ -85,7 +88,7 @@ public class UserController {
      * @return
      * @throws LabReserveException
      */
-    @GetMapping("/{id}/rol")
+    @PutMapping("/rol/{rol}")
     public User changeRol(@PathVariable String rol,@RequestBody User user) throws LabReserveException {
         return userServ.changeUserRol(rol,user);
     }

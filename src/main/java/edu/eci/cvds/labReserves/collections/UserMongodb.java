@@ -11,7 +11,7 @@ import java.util.List;
 @Document(collection = "user")
 public  class UserMongodb extends User {
     @Id
-    private int id;
+    private String id;
 
 
     public UserMongodb(User user) throws LabReserveException {
