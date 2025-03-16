@@ -41,6 +41,9 @@ public class ReserveService{
         reserve.setSchedule(schedule.getId());
         ScheduleMongodb scheduleMongodb = new ScheduleMongodb(schedule);
         ReserveMongodb resMongo = new ReserveMongodb(reserve);
+        if (!anotherReserve(scheduleMongodb)){
+            throw new LabReserveException(LabReserveException.RESERVE_ALREADY_EXIST);
+        }
         scheduleRepo.save(scheduleMongodb);
         reserveRepo.save(resMongo);
         return resMongo;
@@ -194,5 +197,21 @@ public class ReserveService{
     public ScheduleMongodb getScheduleBySchedule(Schedule schedule) throws LabReserveException {
         return scheduleRepo.findByTime(schedule.getStartHour(), schedule.getNumberDay(),
                 schedule.getDay(), schedule.getMonth(), schedule.getYear());
+    }
+
+    private boolean anotherReserve(ScheduleMongodb schedule){
+        List<ScheduleMongodb> scheduleMongodbs = scheduleRepo.findAll();
+        for (ScheduleMongodb scheduleMongodb : scheduleMongodbs) {
+            if (scheduleMongodb.getLaboratory().equals(schedule.getLaboratory())){
+                if (scheduleMongodb.getYear() == schedule.getYear() &&
+                        scheduleMongodb.getMonth().equals(schedule.getMonth()) &&
+                        scheduleMongodb.getDay().equals(schedule.getDay()) &&
+                        scheduleMongodb.getNumberDay() == schedule.getNumberDay() &&
+                        scheduleMongodb.getStartHour().equals(schedule.getStartHour())) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
