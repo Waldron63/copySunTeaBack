@@ -16,16 +16,16 @@ public class ReserveTest {
     @BeforeEach
     void setUp() throws LabReserveException {
         Teacher rodrigo = new Teacher(1, "Rodrigo", "rodrigo@mail", "rodrigo");
-        reseve = new Reserve("lesson", "CVDS",rodrigo);
+        reseve = new Reserve("lesson", "CVDS", 1);
     }
 
     @Test
     void testMakeReserveOfTeachers(){
         Teacher irma = new Teacher(2, "Irma", "irma@mail", "irma");
         try {
-            Reserve reserveTest = new Reserve("lesson", "POOB", irma);
+            Reserve reserveTest = new Reserve("lesson", "POOB", 2);
             assertEquals(reserveTest.getReason(), "POOB");
-            assertEquals(reserveTest.getUser().getName(), "Irma");
+            assertEquals(reserveTest.getUser(), 2);
         }catch (LabReserveException e){
             fail(e.getMessage());
         }
@@ -35,9 +35,9 @@ public class ReserveTest {
     void testMakeReserveOfAdmin() {
         Administrator aurora = new Administrator(3, "Aurora", "aurora@mail", "aurora");
         try {
-            Reserve reserveTest = new Reserve("lesson", "MBDA", aurora);
+            Reserve reserveTest = new Reserve("lesson", "MBDA", 3);
             assertEquals(reserveTest.getReason(), "MBDA");
-            assertEquals(reserveTest.getUser().getName(), "Aurora");
+            assertEquals(reserveTest.getUser(), 3);
         }catch (LabReserveException e) {
             fail(e.getMessage());
         }

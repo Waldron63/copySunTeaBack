@@ -1,9 +1,12 @@
 package edu.eci.cvds.labReserves.services;
 import edu.eci.cvds.labReserves.collections.ReserveMongodb;
+import edu.eci.cvds.labReserves.collections.ScheduleMongodb;
+import edu.eci.cvds.labReserves.dto.ReserveRequest;
 import edu.eci.cvds.labReserves.repository.mongodb.*;
 import edu.eci.cvds.labReserves.model.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -19,84 +22,196 @@ import java.util.List;
 public class ReserveService{
 
     @Autowired
-    private ReserveMongoRepository reserveRepo;
-
-    /**
-     * Constructor to inject dependencies for ReserveMongoRepository
-     *
-     * @param reserveRepo the repository for MongoDB reserves
-     */
-    public ReserveService(ReserveMongoRepository reserveRepo){
-        this.reserveRepo = reserveRepo;
-    }
+    private ReserveMongoRepository reserveRepo; //interface of Reserve
+    @Autowired
+    private ScheduleMongoRepository scheduleRepo; //interface of Schedule
 
     /**
      * Saves a reserve .
      *
-     * @param reserve the reserve made of the user
+     * @param reserveRequest the reserve made of the user
      * @return the saved Reserve object
      */
-    public Reserve saveReserve(Reserve reserve) throws LabReserveException {
+    public ReserveMongodb saveReserve(ReserveRequest reserveRequest) throws LabReserveException {
+        Schedule schedule = new Schedule(reserveRequest.getStartHour(), reserveRequest.getNumberDay(),
+                reserveRequest.getDay(), reserveRequest.getMonth(),
+                reserveRequest.getYear(), reserveRequest.getLaboratoryName());
+        Reserve reserve = new Reserve(reserveRequest.getType(),
+                reserveRequest.getReason(), reserveRequest.getUserId());
+        reserve.setSchedule(schedule.getId());
+        ScheduleMongodb scheduleMongodb = new ScheduleMongodb(schedule);
         ReserveMongodb resMongo = new ReserveMongodb(reserve);
-        return reserveRepo.save(resMongo);
+        if (!anotherReserve(scheduleMongodb)){
+            throw new LabReserveException(LabReserveException.RESERVE_ALREADY_EXIST);
+        }
+        scheduleRepo.save(scheduleMongodb);
+        reserveRepo.save(resMongo);
+        return resMongo;
     }
 
-    public void deleteReserveBySchedule(Schedule schedule) throws LabReserveException {
-        reserveRepo.deleteBySchedule(schedule);
+    /**
+     * Deletes a reservation by its associated schedule ID.
+     *
+     * @param scheduleId The schedule ID linked to the reservation.
+     * @return A {@code ResponseEntity} indicating success or failure.
+     * @throws LabReserveException If the reservation cannot be found.
+     */
+    public ResponseEntity<Void> deleteReserveByScheduleId(int scheduleId) throws LabReserveException {
+        ReserveMongodb resMongo = reserveRepo.findByScheduleId(scheduleId);
+        reserveRepo.deleteById(resMongo.getId());
+        return ResponseEntity.noContent().build();
     }
 
-    public void deleteAllReserveByUser(String userId) throws LabReserveException {
-        reserveRepo.deleteAllByUserId(userId);
+    /**
+     * Deletes a schedule by its ID.
+     *
+     * @param scheduleId The ID of the schedule to delete.
+     */
+    public void deleteById(int scheduleId){
+        scheduleRepo.deleteById(scheduleId);
     }
 
-    public List<ReserveMongodb> getAllReserves() throws LabReserveException {
-        return reserveRepo.findAll();
+    /**
+     * Deletes a reservation by its ID.
+     *
+     * @param id The reservation ID to delete.
+     * @return A {@code ResponseEntity} indicating success or failure.
+     * @throws LabReserveException If the reservation cannot be found.
+     */
+    public ResponseEntity<Void> deleteReserveById(int id) throws LabReserveException {
+        reserveRepo.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
-    public List<ReserveMongodb> getReserveByLaboratory(String laboratoryAbbreviation) throws LabReserveException {
-        return reserveRepo.findByLaboratoryName(laboratoryAbbreviation);
-        /**List<ReserveMongodb> labReserves = new ArrayList<ReserveMongodb>();
+    /**
+     * Retrieves all reservations.
+     *
+     * @return A list of {@code ReserveRequest} objects representing all reservations.
+     */
+    public List<ReserveRequest> getAllReserves() throws LabReserveException {
+        //return reserveRepo.findAll();
+        List<ReserveMongodb> reserve = reserveRepo.findAll();
+        List<ReserveRequest> reserveRequests = new ArrayList<>();
+        for (ReserveMongodb reserveMongodb : reserve) {
+            ReserveRequest request = new ReserveRequest(reserveMongodb,
+                    scheduleRepo.findById(reserveMongodb.getSchedule()));
+            reserveRequests.add(request);
+        }
+        return reserveRequests;
+    }
+
+    /**
+     * Retrieves reservations by laboratory abbreviation.
+     */
+    public List<ReserveRequest> getReserveByLaboratory(String laboratoryAbbreviation) throws LabReserveException {
+        //return reserveRepo.findByLaboratoryName(laboratoryAbbreviation);
+        List<ReserveRequest> labReserves = new ArrayList<>();
         List<ReserveMongodb> reserves = reserveRepo.findAll();
         for (ReserveMongodb reserveMongodb : reserves) {
-            String abreviation = reserveMongodb.getSchedule().getLaboratory().getAbbreviation();
+            int scheduleId = reserveMongodb.getSchedule();
+            ScheduleMongodb scheduleMongodb = scheduleRepo.findById(scheduleId);
+            String abreviation = scheduleMongodb.getLaboratory();
             if (abreviation.equals(laboratoryAbbreviation)) {
-                labReserves.add(reserveMongodb);
+                ReserveRequest request = new ReserveRequest(reserveMongodb, scheduleMongodb);
+                labReserves.add(request);
             }
         }
-        return labReserves;*/
+        return labReserves;
     }
 
-    public List<ReserveMongodb> getReserveByUser(String userId) throws LabReserveException {
-        return reserveRepo.findByUserId(userId);
+    /**
+     * Retrieves reservations by user ID.
+     */
+    public List<ReserveRequest> getReserveByUser(int userId) throws LabReserveException {
+        //return reserveRepo.findByUserId(userId);
+        List<ReserveMongodb> reserves = reserveRepo.findByUserId(userId);
+        List<ReserveRequest> reserveRequests = new ArrayList<>();
+        for (ReserveMongodb reserveMongodb : reserves) {
+            int scheduleId = reserveMongodb.getSchedule();
+            ScheduleMongodb scheduleMongodb = scheduleRepo.findById(scheduleId);
+            ReserveRequest request = new ReserveRequest(reserveMongodb, scheduleMongodb);
+            reserveRequests.add(request);
+        }
+        return reserveRequests;
     }
 
-    public List<ReserveMongodb> getReserveByDay(DayOfWeek day) throws LabReserveException {
-        return reserveRepo.findByDay(day);
-        /**List<ReserveMongodb> labReserves = new ArrayList<ReserveMongodb>();
+    /**
+     * Retrieves reservations by day of the week.
+     */
+    public List<ReserveRequest> getReserveByDay(DayOfWeek day) throws LabReserveException {
+        //return reserveRepo.findByDay(day);
+        List<ReserveRequest> labReserves = new ArrayList<>();
         List<ReserveMongodb> reserves = reserveRepo.findAll();
         for (ReserveMongodb reserveMongodb : reserves) {
-            DayOfWeek dayReserves = reserveMongodb.getSchedule().getDay();
+            ScheduleMongodb scheduleMongodb = scheduleRepo.findById(reserveMongodb.getSchedule());
+            DayOfWeek dayReserves = scheduleMongodb.getDay();
             if (day.equals(dayReserves)) {
-                labReserves.add(reserveMongodb);
+                ReserveRequest request = new ReserveRequest(reserveMongodb, scheduleMongodb);
+                labReserves.add(request);
             }
         }
-        return labReserves; */
+        return labReserves;
     }
 
+    /**
+     * Retrieves reservations by month.
+     */
     public List<ReserveMongodb> getReserveByMonth(Month month) throws LabReserveException {
-        return reserveRepo.findByMonth(month);
-        /**List<ReserveMongodb> labReserves = new ArrayList<ReserveMongodb>();
+        //return reserveRepo.findByMonth(month);
+        List<ReserveMongodb> labReserves = new ArrayList<>();
          List<ReserveMongodb> reserves = reserveRepo.findAll();
          for (ReserveMongodb reserveMongodb : reserves) {
-         Month monthReserves = reserveMongodb.getSchedule().getMonth();
-         if (month.equals(monthReserves)) {
-         labReserves.add(reserveMongodb);
+             ScheduleMongodb scheduleMongodb = scheduleRepo.findById(reserveMongodb.getSchedule());
+             Month monthReserves = scheduleMongodb.getMonth();
+             if (month.equals(monthReserves)) {
+                labReserves.add(reserveMongodb);
+             }
          }
-         }
-         return labReserves; */
+         return labReserves;
     }
 
+    /**
+     * Retrieves a  list of reservations by its user ID.
+     */
+    public List<ReserveMongodb> getReserveByUserId(int userId) {
+        return reserveRepo.getAllByUserId(userId);
+    }
+
+    /**
+     * Retrieves a reservation by its ID.
+     */
     public ReserveMongodb getReserveById(int id) throws LabReserveException {
         return reserveRepo.findById(id);
+    }
+
+    /**
+     * Retrieves a schedule by its ID.
+     */
+    public ScheduleMongodb getScheduleById(int id) throws LabReserveException {
+        return scheduleRepo.findById(id);
+    }
+
+    /**
+     * Retrieves a schedule based on its details.
+     */
+    public ScheduleMongodb getScheduleBySchedule(Schedule schedule) throws LabReserveException {
+        return scheduleRepo.findByTime(schedule.getStartHour(), schedule.getNumberDay(),
+                schedule.getDay(), schedule.getMonth(), schedule.getYear());
+    }
+
+    private boolean anotherReserve(ScheduleMongodb schedule){
+        List<ScheduleMongodb> scheduleMongodbs = scheduleRepo.findAll();
+        for (ScheduleMongodb scheduleMongodb : scheduleMongodbs) {
+            if (scheduleMongodb.getLaboratory().equals(schedule.getLaboratory())){
+                if (scheduleMongodb.getYear() == schedule.getYear() &&
+                        scheduleMongodb.getMonth().equals(schedule.getMonth()) &&
+                        scheduleMongodb.getDay().equals(schedule.getDay()) &&
+                        scheduleMongodb.getNumberDay() == schedule.getNumberDay() &&
+                        scheduleMongodb.getStartHour().equals(schedule.getStartHour())) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

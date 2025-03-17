@@ -11,10 +11,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document(collection = "schedule")
 public class ScheduleMongodb extends Schedule {
+
     @Id
-    private int id; //id of schedule (autogenerate)
-    @DBRef
-    private int laboratory_id; //id of laboratory
+    private int id; //identifier for the scheduleMongodb (auto-generated).
+
+    /**
+     * Default constructor for ScheduleMongodb.
+     */
+    public ScheduleMongodb() {
+        super();
+    }
 
     /**
      * Constructs a ScheduleMongodb instance based on a Schedule object.
@@ -23,10 +29,17 @@ public class ScheduleMongodb extends Schedule {
      */
     public ScheduleMongodb(Schedule schedule) throws LabReserveException {
         super(schedule.getStartHour(), schedule.getNumberDay(),
-                schedule.getDay(), schedule.getMonth(), schedule.getYear());
+                schedule.getDay(), schedule.getMonth(), schedule.getYear(), schedule.getLaboratory());
         this.id = schedule.getId();
     }
 
-
-
+    /**
+     * Retrieves the schedule ID.
+     *
+     * @return The schedule ID.
+     */
+    @Override
+    public int getId() {
+        return id;
+    }
 }

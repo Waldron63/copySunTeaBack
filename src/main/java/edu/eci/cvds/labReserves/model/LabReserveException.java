@@ -10,6 +10,7 @@ public class LabReserveException extends Exception{
     public static final String MONTH_BEFORE_ACTUALLY = "month selected before actually"; //Month is before to current
     public static final String DAY_BEFORE_ACTUALLY = "day selected before actually"; //day is before to current
     public static final String HOUR_BEFORE_ACTUALLY = "hour selected before actually"; //hour is before to current
+    public static final String RESERVE_ALREADY_EXIST = "this reserve already exist";
 
     public LabReserveException(String message){
         super(message);

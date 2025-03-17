@@ -17,47 +17,42 @@ public class Reserve {
     private String type; //type of this reserve at moment
     private String reason; //reason why this reserve was created
     private String state; //state of this reserve at moment
-    private User user; //user who create it
-    private Schedule schedule; //schedule for this reserve
+    private int userId; //id of user that made it
+    private int scheduleId; //id of its schedule
+
+    /**
+     * Constructs a Reserve object with a specified type, reason, and user.
+     */
+    public Reserve() {
+
+    }
 
     /**
      * Constructs a Reserve object with a specified type, reason, and user.
      * @param type   The type of the reserve
      * @param reason The reason for the reserve
-     * @param user   The user who created the reserve
      * @throws LabReserveException If any parameter is invalid
      */
-    public Reserve(String type, String reason, User user) throws LabReserveException {
+    public Reserve(String type, String reason, int userId) throws LabReserveException {
         if (!Arrays.asList(typeReserve).contains(type)) {
             throw new LabReserveException(LabReserveException.TYPE_RESERVE_NOT_FOUND);
         }else if (reason.isEmpty()) {
             throw new LabReserveException(LabReserveException.REASON_RESERVE_NOT_FOUND);
-        } else if (user == null) {
+        } else if (userId < 0) {
             throw new LabReserveException(LabReserveException.USER_RESERVE_NOT_FOUND);
         }
         this.type = type;
         this.reason = reason;
-        this.user = user;
+        this.userId = userId;
         this.state = "reserved";
     }
 
     /**
-     * Sets the schedule for this reserve.
-     * @param startHour The start time of the schedule
-      * @param numberDay The day of the month
-      * @param day       The day of the week
-      * @param month     The month of the year
-      * @param year      The year of the schedule
-      * @throws LabReserveException If the provided values are invalid
+     * Sets the schedule of the reserve.
+     * @param schedule The new schedule of the reserve
      */
-    public void setSchedule(LocalTime startHour, int numberDay, DayOfWeek day, Month month, int year)
-            throws LabReserveException {
-        this.schedule = new Schedule();
-        schedule.setYear(year);
-        schedule.setMonth(month);
-        schedule.setNumberDay(numberDay);
-        schedule.setDay(day);
-        schedule.setStartHour(startHour);
+    public void setSchedule(int schedule){
+        this.scheduleId = schedule;
     }
 
     /**
@@ -72,8 +67,8 @@ public class Reserve {
      * Sets the user for the reserve.
      * @param user The user who created the reserve
      */
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(int user) {
+        this.userId = user;
     }
 
     /**
@@ -124,11 +119,11 @@ public class Reserve {
      * Gets the user who created the reserve.
      * @return The user who created the reserve
      */
-    public User getUser() { return user; }
+    public int getUser() { return userId; }
 
     /**
      * Gets the schedule associated with this reserve.
      * @return The schedule of the reserve
      */
-    public Schedule getSchedule() { return schedule; }
+    public int getSchedule() { return scheduleId; }
 }
