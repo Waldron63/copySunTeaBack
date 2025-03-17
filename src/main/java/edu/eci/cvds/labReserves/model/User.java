@@ -2,45 +2,59 @@ package edu.eci.cvds.labReserves.model;
 
 import java.util.*;
 
-public abstract class User {
+import java.util.*;
+
+public class User {
     private int id;
     private String name;
     private String mail;
     private String password;
-    private HashSet<Reserve> reserves;
+    private String rol;
+    private Set<String> rolType = Set.of("teacher", "admin");
 
-    public User(){}
-
-    public User(int id, String name, String mail, String password) {
+    public User(int id, String name, String mail, String password, String rol) throws LabReserveException {
         this.id = id;
         this.name = name;
         this.mail = mail;
         this.password = password;
-        this.reserves = new HashSet<>();
+        if (rolType.contains(rol)){
+            this.rol = rol;
+        }else{
+            throw new LabReserveException(LabReserveException.INVALID_ROL_TYPE);
+        }
     }
 
-
+    /**
+     * get the id of a user
+     * @return the id of a user
+     */
     public int getId() {
         return id;
     }
 
+
+    /**
+     * set the id of a user
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
+        this.name = name;
+        this.mail = mail;
+        this.password = password;
     }
 
-    public String getName() {
+    public String getName(){
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name){
         this.name = name;
     }
-
-    public String getMail() {
+    public String getMail(){
         return mail;
     }
-
-    public void setMail(String mail) {
+    public void setMail(String mail){
         this.mail = mail;
     }
 
@@ -52,8 +66,15 @@ public abstract class User {
         this.password = password;
     }
 
-    public boolean agregarReserva(Reserve reserva){
-        reserves.add(reserva);
-        return true;
-    }
+    /**
+     * get the rol of a user
+     * @return the rol of a user
+     */
+    public String getRol(){return rol;}
+
+    /**
+     * set a new rol for a user
+     * @param newRol
+     */
+    public void setRol(String newRol){this.rol = newRol;}
 }
