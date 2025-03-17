@@ -1,9 +1,8 @@
 package edu.eci.cvds.labReserves;
 
-import edu.eci.cvds.labReserves.model.Administrator;
+import edu.eci.cvds.labReserves.model.User;
 import edu.eci.cvds.labReserves.model.LabReserveException;
 import edu.eci.cvds.labReserves.model.Reserve;
-import edu.eci.cvds.labReserves.model.Teacher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,13 +14,13 @@ public class ReserveTest {
 
     @BeforeEach
     void setUp() throws LabReserveException {
-        Teacher rodrigo = new Teacher(1, "Rodrigo", "rodrigo@mail", "rodrigo");
+        User rodrigo = new User(1, "Rodrigo", "rodrigo@mail", "rodrigo","teacher");
         reseve = new Reserve("lesson", "CVDS", 1);
     }
 
     @Test
-    void testMakeReserveOfTeachers(){
-        Teacher irma = new Teacher(2, "Irma", "irma@mail", "irma");
+    void testMakeReserveOfTeachers() throws LabReserveException {
+        User irma = new User(2, "Irma", "irma@mail", "irma","teacher");
         try {
             Reserve reserveTest = new Reserve("lesson", "POOB", 2);
             assertEquals(reserveTest.getReason(), "POOB");
@@ -32,8 +31,8 @@ public class ReserveTest {
     }
 
     @Test
-    void testMakeReserveOfAdmin() {
-        Administrator aurora = new Administrator(3, "Aurora", "aurora@mail", "aurora");
+    void testMakeReserveOfAdmin() throws LabReserveException {
+        User aurora = new User(3, "Aurora", "aurora@mail", "aurora","admin");
         try {
             Reserve reserveTest = new Reserve("lesson", "MBDA", 3);
             assertEquals(reserveTest.getReason(), "MBDA");
