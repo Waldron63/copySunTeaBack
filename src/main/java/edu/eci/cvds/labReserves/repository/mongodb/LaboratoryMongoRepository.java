@@ -22,41 +22,74 @@ public interface LaboratoryMongoRepository extends MongoRepository<LaboratoryMon
 
 
     // consultar detalles del aula
-    List<LaboratoryMongodb> findAll();
 
     // consultar horarios disponibles por dia
     //List<ScheduleMongodb> findAllByDay(String day);
 
-    // consultar recursos por laboratorio
+    /**
+     * Busca todos los recursos asociados a un laboratorio.
+     * @param resource Recurso a buscar.
+     * @return Lista de recursos que coinciden con el criterio.
+     */
     @Query("{ 'resource' : ?0 }")
     List<Resource> findAllByRecourses(Resource resource);
 
-    // Busca un laboratorio por su abreviatura
+    /**
+     * Busca un laboratorio por su abreviatura.
+     * @param abbreviation Abreviatura del laboratorio.
+     * @return El laboratorio encontrado o null si no existe.
+     */
     @Query("{ 'abbreviation' : ?0 }")
     LaboratoryMongodb findByAbbreviation(String abbreviation);
 
-    // Busca un laboratorio por su nombre
+    /**
+     * Busca un laboratorio por su nombre.
+     * @param name Nombre del laboratorio.
+     * @return El laboratorio encontrado o null si no existe.
+     */
     @Query("{ 'name' : ?0 }")
     LaboratoryMongodb findByName(String name);
 
-    // Busca laboratorios por su ubicación
+    /**
+     * Busca laboratorios en una ubicación específica.
+     * @param location Ubicación del laboratorio.
+     * @return Lista de laboratorios en la ubicación especificada.
+     */
     @Query("{ 'location' : ?0 }")
     List<LaboratoryMongodb> findByLocation(String location);
 
-    // Busca laboratorios por su capacidad total
+    /**
+     * Busca laboratorios con una capacidad total específica.
+     * @param totalCapacity Capacidad total del laboratorio.
+     * @return Lista de laboratorios con la capacidad especificada.
+     */
     @Query("{ 'totalCapacity' : ?0 }")
     List<LaboratoryMongodb> findByTotalCapacity(int totalCapacity);
 
-    // Busca laboratorios con capacidad mayor o igual a la especificada
+    /**
+     * Busca laboratorios con una capacidad mayor o igual a la especificada.
+     * @param capacity Capacidad mínima requerida.
+     * @return Lista de laboratorios que cumplen con la capacidad especificada.
+     */
     @Query("{ 'totalCapacity' : { $gte : ?0 } }")
     List<LaboratoryMongodb> findByTotalCapacityGreaterThanEqual(int capacity);
 
-    // Verifica si existe un laboratorio con la abreviatura dada
+    /**
+     * Verifica si existe un laboratorio con la abreviatura dada.
+     * @param abbreviation Abreviatura del laboratorio.
+     * @return true si existe un laboratorio con esa abreviatura, false en caso contrario.
+     */
     @Query(value = "{ 'abbreviation' : ?0 }", exists = true)
     boolean existsByAbbreviation(String abbreviation);
 
-    // Elimina un laboratorio por su abreviatura
-    @Query("{ 'abbreviation' : ?0 }")
+    /**
+     * Elimina un laboratorio por su abreviatura.
+     * @param abbreviation Abreviatura del laboratorio a eliminar.
+     */
+    @Query(value = "{ 'abbreviation' : ?0 }", delete = true)
     void deleteByAbbreviation(String abbreviation);
+
+    // @Query("{ 'abbreviaton'n : ?0 }")
+    // void updateLaboratory (LaboratoryMongodb laboratoryMongodb);
 
 }
