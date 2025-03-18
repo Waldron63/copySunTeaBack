@@ -1,4 +1,4 @@
-name: Deploy Java project to Azure Function App
+name: Deploy Java App to Azure Web App
 
 on:
   push:
@@ -7,9 +7,9 @@ on:
     branches: [ "main" ]
 
 env:
-  AZURE_FUNCTIONAPP_NAME: 'LabReserve'
+  AZURE_WEBAPP_NAME: 'labReserve'  
   AZURE_WEBAPP_PACKAGE_PATH: 'target/*.jar'  
-  JAVA_VERSION: '17'
+  JAVA_VERSION: '17' 
 
 jobs:
   build:
@@ -26,7 +26,7 @@ jobs:
           distribution: 'temurin' 
 
       - name: 'Build with Maven'
-        run: mvn compile
+        run: mvn clean package
 
       - name: 'Upload build artifact'
         uses: actions/upload-artifact@v3
@@ -78,4 +78,4 @@ jobs:
             distribution: 'temurin'
 
         - name: 'Build with Maven'
-          run: echo 'En construccion ...'
+          run: echo 'En construccion...'
