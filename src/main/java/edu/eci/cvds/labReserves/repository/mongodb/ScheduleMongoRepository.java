@@ -28,15 +28,15 @@ public interface ScheduleMongoRepository extends MongoRepository<ScheduleMongodb
      * @param year       The year.
      * @return The matching ScheduleMongodb entity or null if not found.
      */
-    @Query("{ 'startHour' : ?0, 'numberDay' : ?1, 'day' : ?2, 'month' : ?3, 'year' : ?4 }")
-    ScheduleMongodb findByTime(LocalTime startHour, int numberDay, DayOfWeek day, Month month, int year);
+    @Query("{ 'startHour' : ?0, 'numberDay' : ?1, 'day' : ?2, 'month' : ?3, 'year' : ?4, 'laboratory' : ?5 }")
+    ScheduleMongodb findByTime(LocalTime startHour, int numberDay, DayOfWeek day, Month month, int year, String laboratory);
 
     /**
      * Deletes a ScheduleMongodb entity by its ID.
      *
      * @param id The ID of the schedule to delete.
      */
-    void deleteById(int id);
+    void deleteById(String id);
 
     /**
      * Finds a ScheduleMongodb entity by its ID.
@@ -44,5 +44,6 @@ public interface ScheduleMongoRepository extends MongoRepository<ScheduleMongodb
      * @param id The ID of the schedule to find.
      * @return The matching ScheduleMongodb entity or null if not found.
      */
-    ScheduleMongodb findById(int id);
+    @Query("{ '_id' : ?0 }")
+    ScheduleMongodb findByScheduleId(String id);
 }

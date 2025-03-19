@@ -20,8 +20,14 @@
              distribution: 'temurin'
              cache: maven
          
-         - name: Build with Maven
+         - name: Compile with Maven
            run: mvn compile
+         - name: Upload Compilation Artifacts
+           uses: actions/upload-artifact@v3
+           with:
+             name: comiled-artifacts
+             path: target/classes/
+
    
      test:
        runs-on: ubuntu-latest
@@ -38,7 +44,15 @@
              cache: maven
    
          - name: Run tests
-           run: mvn verify
+           run: mvn test
+
+         - name: Upload Test Report
+           uses: actions/upload-artifact@v3
+           if: success() || failure()
+           with:
+             name: test report
+             path: target/surefire-reports/
+
    
      deploy:
        runs-on: ubuntu-latest
@@ -53,6 +67,7 @@
              java-version: '17'
              distribution: 'temurin'
              cache: maven
+
          - name: Build with Maven
            run: echo "En construccion..."
 
