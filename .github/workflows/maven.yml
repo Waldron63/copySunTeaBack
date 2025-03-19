@@ -23,7 +23,7 @@
          - name: Compile with Maven
            run: mvn compile
          - name: Upload Compilation Artifacts
-           uses: actions/upload-artifact@v3
+           uses: actions/upload-artifact@v4
            with:
              name: comiled-artifacts
              path: target/classes/
