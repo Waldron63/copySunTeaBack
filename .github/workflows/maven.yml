@@ -63,13 +63,19 @@
            with:
              java-version: '17'
              distribution: 'temurin'
-             cache: maven
+             
          - name: Build with Maven
-           run: mvn package -DskipTests
-             - name: Deploy to Azure WebApp
-               uses: azure/webapps-deploy@v2
-               with:
-                 app-name: nombre App Service
-                 publish-profile: secreto creado en GitHub
-                 package:  nombre archivo .jar
+           run: mvn package
+           
+         - name: Deploy to Azure WebApp
+           uses: azure/webapps-deploy@v2
+           with:
+             app-name: LabReserve
+             publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+             package: target/*.jar
 
+         - name: 'Upload build artifact'
+           uses: actions/upload-artifact@v4
+           with:
+             name: app-jar
+             path: target/*.jar
