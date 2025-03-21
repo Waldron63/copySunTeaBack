@@ -70,7 +70,7 @@
          - name: Deploy to Azure WebApp
            uses: azure/webapps-deploy@v2
            with:
-             app-name: LabReserve
+             app-name: LabReserveEci
              publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
              package: target/*.jar
 
