@@ -28,7 +28,7 @@ jobs:
         run: mvn clean package
 
       - name: 'Upload build artifact'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: app-jar
           path: target/*.jar
@@ -48,7 +48,7 @@ jobs:
           distribution: 'temurin'
 
       - name: 'Download build artifact'
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: app-jar
 
@@ -56,7 +56,7 @@ jobs:
         run: mvn test
 
       - name: 'Upload test results'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-results
           path: target/surefire-reports/
@@ -87,7 +87,7 @@ jobs:
             package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
         - name: 'Upload build artifact'
-          uses: actions/upload-artifact@v3
+          uses: actions/upload-artifact@v4
           with:
             name: app-jar
             path: target/*.jar
