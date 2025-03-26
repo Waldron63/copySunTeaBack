@@ -79,15 +79,17 @@ jobs:
         - name: 'Build with Maven'
           run: mvn package
   
-        - name: 'Deploy to Azure Web App'
+        - name: Login to Azure
+          uses: azure/login@v2
+          with:
+            client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_C81BC272260147F6BF47D2A5B03BB06D }}
+            tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_2F050C8719824FC9A3A809B90CEE7FC1 }}
+            subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_97A7EBF01AF84DA6A79A563640CFE144 }}
+
+        - name: Deploy to Azure Web App
+          id: deploy-to-webapp
           uses: azure/webapps-deploy@v2
           with:
-            app-name: ${{ env.AZURE_WEBAPP_NAME }}
-            publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-            package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-
-        - name: 'Upload build artifact'
-          uses: actions/upload-artifact@v4
-          with:
-            name: java-app
-            path: target/*.jar
+            app-name: 'LabReserveEci'
+            slot-name: 'Production'
+            package: '*.jar'
