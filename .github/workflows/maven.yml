@@ -30,7 +30,7 @@ jobs:
       - name: 'Upload build artifact'
         uses: actions/upload-artifact@v4
         with:
-          name: app-jar
+          name: java-app
           path: target/*.jar
 
   test:
@@ -50,7 +50,7 @@ jobs:
       - name: 'Download build artifact'
         uses: actions/download-artifact@v4
         with:
-          name: app-jar
+          name: java-app
 
       - name: 'Run tests with Maven'
         run: mvn test
@@ -89,5 +89,5 @@ jobs:
         - name: 'Upload build artifact'
           uses: actions/upload-artifact@v4
           with:
-            name: app-jar
+            name: java-app
             path: target/*.jar
