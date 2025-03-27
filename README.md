@@ -1,4 +1,4 @@
-# Laboratory Reservation System
+# Copy Laboratory Reservation System
 
 The purpose of this project is to develop an application for laboratory reservations, specifically for the laboratories in the systems area of the Universidad Escuela Colombiana de Ingeniería Julio Garavito. This application will allow users to reserve each laboratory within the permitted schedule, as well as cancel reservations if necessary, and consult any type of information about each laboratory they need, all through a user-friendly and intuitive web interface. This repository is specifically for the Backend area; if you want to check the status of the front, follow this link: https://github.com/Waldron63/FrutiFront
 
@@ -18,78 +18,46 @@ The purpose of this project is to develop an application for laboratory reservat
 - María Paula Sánchez
 - Santiago Gualdron
 
-## Procedure:
-### Diagram
-To start this project, we begin by creating a class diagram, to understand how objects are related within the database (in this case MongoDB).
+## Procedure of Laboratory 5:
 
+primero empezamos a generar un nuevo archivo maven.yml con las instrucciones dadas en el laboratorio:
 
-![image](https://github.com/user-attachments/assets/f97c31c1-b686-4164-bc43-c901b09971a0)
+build: únicamente realizar hasta la fase compile de maven, es prerrequisito de test.
+test: realizar la fase de verify y responder ¿se puede lograr que se ejecute sin necesidad de compilar el proyecto?, es dependiente (needs) de build para ser ejecutada, y a su vez es prerrequisito par hacer deploy.
+deploy: por ahora deberá imprimir en consola "En construcción ...", necesita (needs) que se haya ejecutado test antes de iniciar.
 
-### maven
-Once we understand the relationship of the objects, we create the project with maven in SpringBoot; and the respective dependencies for the web, mongo, Jacoco, etc.
+![image](https://github.com/user-attachments/assets/dee9359f-7ddb-4d08-9f41-236339575f25)
+![image](https://github.com/user-attachments/assets/882a1b18-c6bb-4e71-8465-bb57ada6ff5c)
 
+se revisa que genere bien el gitflow actions:
+![image](https://github.com/user-attachments/assets/22e880be-8d49-47c7-a044-72dea683cb25)
 
-![image](https://github.com/user-attachments/assets/d8682104-c07d-4693-84f4-707efc21dd17)
-![image](https://github.com/user-attachments/assets/d5994e0c-002c-43af-b781-30feadf1506e)
+luego se agregan los siguientes test para revisar la funcionalidad de ReserveService:
+![image](https://github.com/user-attachments/assets/03851a08-598a-4302-9ec5-40efe35e70f5)
+![image](https://github.com/user-attachments/assets/0114f488-0943-4276-9891-b7af9630f3d5)
+![image](https://github.com/user-attachments/assets/7e503b32-dcbd-42bd-b0bc-bb09a792bb08)
+![image](https://github.com/user-attachments/assets/73031fc5-8dfa-41f8-8c5a-ce87cab291a4)
+![image](https://github.com/user-attachments/assets/a34b31f9-2d61-4da2-9b13-abfb8a26dacf)
 
-### Package
-Maven and the dependencies are already working, now we start to generate the package system to have an order of all the java classes that will be created.
-Among these we will have
-- edu.eci.cvds.labReserves: the root path of all the main of the project (it has internal to the LabReserve that executes the project).
-- model: with all the logic of objects, relations, arrays, attributes, getters and setters. It was made this way with the intention of being extensible in the future to add other databases.
-- collections: contains the @Documents of each class that will be stored in MongoDB, with their IDs and important constructors.
-- repository.mongodb: has the interfaces that extend mongoRepository to generate the CRUD in the DB, in this case we think of having 3 controllers, so there will be 3 interfaces for the database, plus an extra one that will help to store a kind of relationship.
-- service: the logic of the CRUD to store the objects created in the DB.
-- controller: the relation between front and back, where there are only the 3 most important: user, reserve and laboratory; this has the call of all the necessary methods to store the objects sent in front with back.
-- dto: specifically has 1 class that helps to store reservation data, it helps to create ReserveMongoDB and ScheduleMongoDB objects, the latter being a relation between Reserve and Laboratory.
+se vuelve a revisar el gitflow para confirmar que pasan las pruebas test
+![image](https://github.com/user-attachments/assets/b010331c-eeef-4ae9-92e6-cff19ebe9701)
+![image](https://github.com/user-attachments/assets/eec2a2d0-9dc5-4e06-832a-755896268766)
 
-![image](https://github.com/user-attachments/assets/fccf69fa-56bc-4efb-9aec-5ae76e36a7b9)
+## Azure app:
+se ingresa a la pagina oficial de Microsoft Azure for Students, en la zona de ofertas para estudiantes y agregamos le plan gratuito con 100 UDS
+se inicia sesion con el correo de la escuela y se hacen los pasos de comprobacion hasta que aparezca el menu principal:
+![image](https://github.com/user-attachments/assets/de1751a7-26cc-440b-b4dc-a3bc7e9061cd)
+### Azure App Service 
+![image](https://github.com/user-attachments/assets/01d0efb6-8eb3-4df7-b943-d146d7205b4c)
+![image](https://github.com/user-attachments/assets/313d621e-7f00-4a93-86d2-279c96781639)
+![image](https://github.com/user-attachments/assets/2f01baf4-bff1-4bd1-a724-fb2db2d97060)
 
-### Unit Test and JACOCO
+![image](https://github.com/user-attachments/assets/e7c5802d-cfd8-4b74-aeb5-6a9b5f8f1cf5)
+![image](https://github.com/user-attachments/assets/95aa4975-aa2c-47e3-9421-50005f3f6e3d)
+![image](https://github.com/user-attachments/assets/260ad4c9-04a6-4bad-ba6b-91cef4f34e4d)
+agregar:
+![image](https://github.com/user-attachments/assets/25b7c46d-c76c-4408-aac4-2b14a56a5fb5)
+![image](https://github.com/user-attachments/assets/73dab1aa-c1ad-44f2-b70e-5f1d58a09fed)
 
-
-### MongoDB
-To save the data in mongoDB, we decided to use the 2 ways of saving data (in JSON type documents):
-1. referenced: the data of : User, Reserve and Schedule will be saved.
-(a lot of data can be generated, and are constantly being searched)
-2. embedded: it will store in the main Laboratory class, its important data plus the Resource data (physical and Software), and ScheduleReference.
-
-Finally, we created the 4 members of the team, a MongoDB atlas (cloud) account to access the future data we will create:
-
-![image](https://github.com/user-attachments/assets/ca0649b2-580c-4d54-85a9-0ee0f7e595ad)
-
-En application.properties, gracias a SpringBoot, podemos modificar la url para poder conectarnos con la bd por una url, ademas de añadir ciertas configuraciones que pueden servir para las pruebas test, etc:
-
-![image](https://github.com/user-attachments/assets/c415eaf8-9ca2-4102-b9df-c2683a865ff7)
-
-
-### Azure
-
-In order to coordinate the activities, repositories, pipelines and others, we use the AzureDevOps platform for the coordination and distribution of the team.
-
-![image](https://github.com/user-attachments/assets/93c70162-a2f9-49d8-b0e5-3f7b837da4da)
-
-And generate an epic that includes both front-end and back-end tasks. 4 functions to distribute the main areas of the project: 
-1. Consult details of laboratories, reservations and users: the code is generated to be able to visualise the important of each of the objects that will be necessary for the front (GET). Person in charge: Juan David Martinez Mendez
-2. Management of laboratories: the corresponding code for the laboratory and its embedded objects, as well as the initial CRUD that can be used by the front end. Person in charge: Maria Paula Sanchez Macias
-3. Manage Reservations: the respective code for Reserve and Schedule, plus the initial CRUD that can be used by the front-end and its relationship with Laboratory and User. Person in charge: Santiago Gualdron Rincon
-4. Manage Users: the corresponding code for User, plus the initial CRUD that can be used by the front-end. Person in charge: Samuel Alejandro Prieto Reyes
-
-![image](https://github.com/user-attachments/assets/c9c08d13-67ab-4287-9526-c8a973463097)
-
-Within each feature are the respective user stories, tasks and tests that each person must generate.
-
-![image](https://github.com/user-attachments/assets/07257ace-b6d5-457b-a596-eb898bd0a61e)
-
-### Postman
-In order to start testing that the HTTP works, connects to the database and can be used to relate front to back, we will use the Postman platform to generate the POST, DELETE, GET, UPDATE tests.
-Tests for Reserve:
-
-![image](https://github.com/user-attachments/assets/97714708-b8da-40f3-b662-fb792be2bbbc)
-
-Tests for User:
-
-![image](https://github.com/user-attachments/assets/6e77dd72-0c6e-472b-a6ff-9ef2b8d99b0f)
-
-
-Tests for Laboratory:
+![image](https://github.com/user-attachments/assets/90f88992-ccbe-481d-b605-4da36a693d8f)
+![image](https://github.com/user-attachments/assets/7bec574f-db17-4630-aca7-5350f23e156e)
